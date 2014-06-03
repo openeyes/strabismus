@@ -1,0 +1,8 @@
+table.hvt
+{
+	border-collapse:collapse;
+}
+table.hvt td
+{
+	border: 1px solid black;
+}

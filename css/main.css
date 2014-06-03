@@ -1,0 +1,380 @@
+body
+{
+	margin: 0;
+	padding: 0;
+	color: #555;
+	font: normal 10pt Arial,Helvetica,sans-serif;
+	background: #EFEFEF;
+}
+
+body h3
+{
+	margin-top: 10px;
+}
+
+img.leftside {
+
+}
+
+.reval {
+	color: #FF6666;
+}
+
+.displaypdf {
+	margin-left: 10px;
+	margin-top: 10px;
+	width:900px;
+	height:800px;
+	border: 1px solid black;
+}
+
+.hasDatepicker {
+    width: 80px;
+}
+
+#page
+{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background: white;
+	border: 1px solid #C9E0ED;
+}
+
+#header
+{
+
+	margin: 0;
+	padding: 0;
+	border-top: 3px solid #C9E0ED;
+}
+
+#header p {
+	text-align: center;
+    font-size: 0.6em;
+    color: #283888;
+    margin-top: 24px;
+
+}
+
+#content
+{
+    padding: 20px;
+}
+
+#sidebar
+{
+	padding: 20px 20px 20px 0;
+}
+
+#footer
+{
+	padding: 10px;
+	margin: 10px 20px;
+	font-size: 0.8em;
+	text-align: center;
+	border-top: 1px solid #C9E0ED;
+}
+
+#logo
+{
+	padding: 10px 20px;
+	font-size: 200%;
+}
+
+#mainmenu
+{
+	background:white url(bg.gif) repeat-x left top;
+}
+
+#mainmenu ul
+{
+	padding:6px 20px 5px 20px;
+	margin:0px;
+}
+
+#mainmenu ul li
+{
+	display: inline;
+}
+
+#mainmenu ul li a
+{
+	color:#ffffff;
+	background-color:transparent;
+	font-size:12px;
+	font-weight:bold;
+	text-decoration:none;
+	padding:5px 8px;
+}
+
+#mainmenu ul li a:hover, #mainmenu ul li.active a
+{
+	color: #6399cd;
+	background-color:#EFF4FA;
+	text-decoration:none;
+}
+
+div.flash-error, div.flash-notice, div.flash-success
+{
+	padding:.8em;
+	margin-bottom:1em;
+	border:2px solid #ddd;
+}
+
+div.flash-error
+{
+	background:#FBE3E4;
+	color:#8a1f11;
+	border-color:#FBC2C4;
+}
+
+div.flash-notice
+{
+	background:#FFF6BF;
+	color:#514721;
+	border-color:#FFD324;
+}
+
+div.flash-success
+{
+	background:#E6EFC2;
+	color:#264409;
+	border-color:#C6D880;
+}
+
+div.flash-error a
+{
+	color:#8a1f11;
+}
+
+div.flash-notice a
+{
+	color:#514721;
+}
+
+div.flash-success a
+{
+	color:#264409;
+}
+
+div.form .rememberMe label
+{
+	display: inline;
+}
+
+div.view
+{
+	padding: 10px;
+	margin: 10px 0;
+	border: 1px solid #C9E0ED;
+}
+
+div.breadcrumbs
+{
+	font-size: 0.9em;
+	padding: 5px 20px;
+}
+
+div.breadcrumbs span
+{
+	font-weight: bold;
+}
+
+div.search-form
+{
+	padding: 10px;
+	margin: 10px 0;
+	background: #eee;
+}
+
+.portlet
+{
+
+}
+
+.portlet-decoration
+{
+	padding: 3px 8px;
+	background: #B7D6E7;
+	border-left: 5px solid #6FACCF;
+}
+
+.portlet-title
+{
+	font-size: 12px;
+	font-weight: bold;
+	padding: 0;
+	margin: 0;
+	color: #298dcd;
+}
+
+.portlet-content
+{
+	font-size:0.9em;
+	margin: 0 0 15px 0;
+	padding: 5px 8px;
+	background:#EFFDFF;
+}
+
+.portlet-content ul
+{
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin: 0;
+	padding: 0;
+}
+
+.portlet-content li
+{
+	padding: 2px 0 4px 0px;
+}
+
+.operations
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.operations li
+{
+	padding-bottom: 2px;
+}
+
+.operations li a
+{
+	font: bold 12px Arial;
+	color: #0066A4;
+	display: block;
+	padding: 2px 0 2px 8px;
+	line-height: 15px;
+	text-decoration: none;
+}
+
+.operations li a:visited
+{
+	color: #0066A4;
+}
+
+.operations li a:hover
+{
+	background: #80CFFF;
+}
+
+/* Used for displaying two equal height columns */
+.twocolumndiv {
+	display:table;
+	padding:0px;
+	margin: 0px;
+	margin-left: auto;
+	margin-right: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
+}
+
+.twocolumndiv > div {
+	display: table-cell;
+	width: 355px;
+}
+
+.leftcolumn > p {
+	margin-right: 20px;
+}
+
+.rightcolumn > p {
+	margin-right: 20px;
+}
+
+.leftcolumn {
+/*     background-color: #effba7; */
+}
+
+.rightcolumn {
+/*     background-color: #d9e2ab; */
+}
+
+/* Single column */
+.onecolumndiv {
+	display:table;
+	width: 710px;
+	padding:0px;
+	margin: 0px;
+	margin-left: auto;
+	margin-right: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999;
+}
+
+#Dataset_drawing {
+    display: none;
+}
+
+.tooltip {
+	margin-left: 10px !important;
+	background: transparent !important;
+	position: relative;
+	text-decoration: none;
+}
+
+.tooltip a {
+	text-decoration: none;
+}
+
+.tooltip a span {
+	background: transparent;
+	display: none;
+}
+
+.tooltip a:hover span {
+	background-color: aqua;
+	display: block;
+	position: absolute;
+	width: 200px;
+	/*background: transparent url('/images/tooltip_background.png') top left no-repeat;*/
+/* 	height: 85px; */
+	left: 40px;
+	top: -40px;
+	color: #333;
+	font-size: 8pt;
+	padding: 15px;
+	text-decoration: none;
+}
+
+.tooltip a img {
+	width: 14px;
+	height: 14px;
+}
+
+/* Results table */
+.results {
+	width: 480px;
+}
+
+/* Right align text of headers and table cells */
+.results td, th {
+	text-align: right;
+}
+
+.opnoteTable label {
+	font-weight: bold;
+}
+
+/* Patient label in opnote */
+.leftcolumn img {
+	position: absolute;
+}
+
+.muscles td, th {
+	text-align: left;
+}
+
+/* Centre drawings in column */
+.EyeDrawWidget {
+	margin-left: 20px;
+}
+
+
+

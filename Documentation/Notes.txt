@@ -1,0 +1,135 @@
+Eso or Exo diagnosis and possible check box.
+
+Leave Surgeon 2 and grade for now
+
+Debug from October
+Launch middle fo November
+
+Near should be before distance
+
+CGBI (Childrens Glasgow Benefit Inventory) - -100 to 100 increment of 1
+
+SELECT s.name, p.term FROM proc AS p
+INNER JOIN proc_subspecialty_assignment AS ps ON (p.id = ps.proc_id)
+INNER JOIN subspecialty AS s ON (s.id = ps.subspecialty_id)
+
+SELECT p.term FROM proc AS p
+INNER JOIN proc_subspecialty_subsection_assignment AS ps ON (p.id = ps.proc_id)
+
+        	<!-- Right operation diagram -->
+			<?php
+				/*
+				$this->widget('application.modules.eyedraw2.OEEyeDrawWidget', array(
+					'scriptArray'=>array('ED_Strabismus.js'),
+					'side'=>'R',
+					'mode'=>'edit',
+					'toolbar' => false,
+					'width'=>300,
+					'height'=>300,
+					'idSuffix'=> 'RSS',
+					'model'=>$model,
+					'attribute'=>'op_eyedraw_right',
+					'onReadyCommandArray'=>array(
+						array('addDoodle', array('StrabOpTemplate')),
+						array('addDoodle', array('Rectus', array('rotation'=>0, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rsr_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>1.5707963, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rmr_amount'),'transposition'=>array('id'=>'Dataset_op_rmr_transposition')))),
+						array('addDoodle', array('Rectus', array('rotation'=>3.1415926, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rir_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>4.7123889, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rlr_amount'),'transposition'=>array('id'=>'Dataset_op_rlr_transposition')))),
+						array('deselectDoodles'),
+					),
+					'onDoodlesLoadedCommandArray'=>array(
+						array('deleteDoodlesOfClass', array('Rectus')),
+						array('addDoodle', array('Rectus', array('rotation'=>0, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rsr_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>1.5707963, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rmr_amount'),'transposition'=>array('id'=>'Dataset_op_rmr_transposition')))),
+						array('addDoodle', array('Rectus', array('rotation'=>3.1415926, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rir_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>4.7123889, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rlr_amount'),'transposition'=>array('id'=>'Dataset_op_rlr_transposition')))),						
+						array('deselectDoodles'),
+					),
+				));
+				*/
+			?>
+
+			<?php
+				/*
+				$this->widget('application.modules.eyedraw2.OEEyeDrawWidget', array(
+					'scriptArray'=>array('ED_Strabismus.js'),
+					'side'=>'R',
+					'mode'=>'edit',
+					'toolbar' => false,
+					'width'=>300,
+					'height'=>300,
+					'idSuffix'=> 'RSS',
+					'model'=>$model,
+					'attribute'=>'op_eyedraw_right',
+					'onReadyCommandArray'=>array(
+						array('addDoodle', array('StrabOpTemplate')),
+						array('addDoodle', array('Rectus', array('rotation'=>0, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rsr_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>1.5707963, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rmr_amount'),'transposition'=>array('id'=>'Dataset_op_rmr_transposition')))),
+						array('addDoodle', array('Rectus', array('rotation'=>3.1415926, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rir_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>4.7123889, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rlr_amount'),'transposition'=>array('id'=>'Dataset_op_rlr_transposition')))),
+						array('deselectDoodles'),
+					),
+					'onDoodlesLoadedCommandArray'=>array(
+						array('deleteDoodlesOfClass', array('Rectus')),
+						array('addDoodle', array('Rectus', array('rotation'=>0, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rsr_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>1.5707963, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rmr_amount'),'transposition'=>array('id'=>'Dataset_op_rmr_transposition')))),
+						array('addDoodle', array('Rectus', array('rotation'=>3.1415926, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_rir_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>4.7123889, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_rlr_amount'),'transposition'=>array('id'=>'Dataset_op_rlr_transposition')))),						
+						array('deselectDoodles'),
+					),
+				));
+				*/
+			?>
+
+
+<!--
+		<?php
+			/*
+			if ($showDiagram)
+			{
+	            $this->widget('application.modules.eyedraw2.OEEyeDrawWidget', array(
+					'scriptArray'=>array('ED_Strabismus.js'),
+					'side'=>'R',
+					'mode'=>'view',
+					'width'=>200,
+					'height'=>200,
+					'idSuffix'=> 'RSS',
+					'model'=>$model,
+					'attribute'=>'op_eyedraw_right',
+				));
+			}
+			*/
+		?>	
+-->
+
+			<?php
+			/*
+				$this->widget('application.modules.eyedraw2.OEEyeDrawWidget', array(
+					'scriptArray'=>array('ED_Strabismus.js'),
+					'side'=>'L',
+					'mode'=>'edit',
+					'toolbar' => false,
+					'width'=>300,
+					'height'=>300,
+					'idSuffix'=> 'LSS',
+					'model'=>$model,
+					'attribute'=>'op_eyedraw_left',
+					'onReadyCommandArray'=>array(
+						array('addDoodle', array('StrabOpTemplate')),
+						array('addDoodle', array('Rectus', array('rotation'=>0, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_lsr_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>1.5707963, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_llr_amount'),'transposition'=>array('id'=>'Dataset_op_llr_transposition')))),
+						array('addDoodle', array('Rectus', array('rotation'=>3.1415926, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_lir_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>4.7123889, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_lmr_amount'),'transposition'=>array('id'=>'Dataset_op_lmr_transposition')))),
+						array('deselectDoodles'),
+					),
+					'onDoodlesLoadedCommandArray'=>array(
+						array('deleteDoodlesOfClass', array('Rectus')),
+						array('addDoodle', array('Rectus', array('rotation'=>0, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_lsr_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>1.5707963, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_llr_amount'),'transposition'=>array('id'=>'Dataset_op_llr_transposition')))),
+						array('addDoodle', array('Rectus', array('rotation'=>3.1415926, 'canTranspose'=>'false'), array('recession'=>array('id'=>'Dataset_op_lir_amount')))),
+						array('addDoodle', array('Rectus', array('rotation'=>4.7123889, 'canTranspose'=>'true'), array('recession'=>array('id'=>'Dataset_op_lmr_amount'),'transposition'=>array('id'=>'Dataset_op_lmr_transposition')))),					
+						array('deselectDoodles'),
+					),
+				));
+				*/
+			?>
