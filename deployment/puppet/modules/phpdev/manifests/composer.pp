@@ -5,22 +5,20 @@ class phpdev::composer {
     owner => 'vagrant',
     group => 'vagrant',
     require => Package['apache2'],
-  }
+  } ->
 
   exec { "composer:fetch":
-    cwd => '/var/www',
+    cwd => '/srv/code',
     command => "/usr/bin/curl -sS https://getcomposer.org/installer | /usr/bin/php",
-    creates => "/var/www/composer.phar",
+    creates => "/srv/code/composer.phar",
     require => [
       Package['curl', 'git-core', 'php5-cli', 'apache2'],
-      File['/var/www'],
     ],
-  }
-
-  ->
+  } ->
 
   exec { "composer:install":
-    cwd => '/var/www',
-    command => "/var/www/composer.phar install --prefer-source --no-interaction --working-dir /var/www",
+    cwd => '/srv/code',
+    command => "/srv/code/composer.phar install --prefer-source --no-interaction --working-dir /srv/code",
   }
+
 }
