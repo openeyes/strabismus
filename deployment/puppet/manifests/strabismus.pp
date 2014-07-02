@@ -11,6 +11,11 @@ file { '/var/www/assets':
   mode   => '0777',
 }
 
+file { '/var/framework':
+  ensure => link,
+  target => '/srv/code/framework/framework',
+}
+
 exec { 'create database':
   unless  => '/usr/bin/mysql -uroot strabismus',
   command => '/usr/bin/mysql -uroot -e "create database strabismus"',

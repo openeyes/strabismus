@@ -19,15 +19,32 @@ class phpdev::apache {
   
   file { "local site":
     path    => '/etc/apache2/sites-available/local',
-    ensure  => present,
+    ensure  => 'present',
     source => "puppet:///modules/phpdev/local.site.conf",
     require => Package['apache2'],
     notify  => Service['apache2'],
     mode    => 644,
   }
   
-  file { '/var/www/index.html':
+  file { "/var/www":
+    ensure => 'directory',
+    owner => 'vagrant',
+    group => 'vagrant',
     require => Package['apache2'],
-    ensure => absent,
+  }
+ 
+  file {"/var/protected":
+    ensure => 'link',
+    target => '/srv/code/protected',
+    owner => 'vagrant',
+    group => 'vagrant',
+  }
+
+  file { '/var/www/index.html':
+    require => [
+      Package['apache2'],
+      File['/var/protected'],
+    ],
+    ensure => 'absent',
   }
 }
