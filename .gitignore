@@ -1,2 +1,4 @@
 protected/modules/eyedraw
 .DS_Store
+protected/runtime/*.log
+vendor/*
