@@ -909,3 +909,33 @@ function disclose(_id) {
 		document.getElementById(closeId).style.display = 'block';
 	}
 }
+
+jQuery(document).ready(function () {
+    var togglers = jQuery('.section-toggle');
+    var toggled = jQuery('.toggled-section');
+    console.log(togglers, togglers.length);
+    console.log(toggled, toggled.length);
+    if (togglers.length != toggled.length) {
+	console.log("An uneven numbers of togglers and toggleables were found.");
+	return;
+    }
+    console.log('arse', togglers.length);
+    for (var a=0; a < togglers.length; a++) {
+	(function (b) {
+	    jQuery(togglers.get(b)).click(function(i) {
+		var jI = jQuery(i);
+		console.log('b',b);
+		var tgt = jQuery(toggled.get(b));
+		console.log("tgt",tgt);
+		if (tgt.hasClass('toggled-open')) {
+		    tgt.slideUp().removeClass('toggled-open');
+		    jI.removeClass('toggled-open');
+		} else {
+		    tgt.addClass('toggled-open').slideDown();
+		    jI.addClass('toggled-open');
+		}
+	    });
+	})(a);
+    }
+});
+

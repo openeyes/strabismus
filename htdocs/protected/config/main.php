@@ -54,10 +54,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		// GRANT INSERT, SELECT, UPDATE, DELETE ON strabismus_dataset.* TO 'bill'@'localhost' IDENTIFIED BY  'aylward';
 			'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=strabismus_dataset',
+			'connectionString' => 'mysql:host=localhost;dbname=strabismus',
 			'emulatePrepare' => true,
-			'username' => 'bill',
-			'password' => 'aylward',
+			'username' => 'root',
+			'password' => '',
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
 		),

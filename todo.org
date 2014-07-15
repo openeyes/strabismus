@@ -1,0 +1,44 @@
+* #2 Vagrantise
+* #3 Write test suite for current form behaviour
+* #4 Merge the adult form and child forms
+* #5 Rename the field captions to be more consistent
+* #6 Data importer script
+
+* Adult form needs 
+** #4 Under pre-operative assessment grey box BCVA letters from the child dataset, optional
+** #5 Every section should be under expanders
+** #6 Fix alignment under co-factors. Look generally at alignment
+** #7 Just display mandatory fields when you click a button. Colour them red and warn if they aren't filled in with javascript
+** #7 An abstraction over mandatory fields that makes changing them straightforward for a developer
+** #8 EPOA section
+* Printing created dataset
+** Must fit on A4
+** Layout is quite wasteful of space
+** Fix print stylesheet
+* Minor tweaks
+* After creating an adult operation note, go to it.
+
+* Manage Datasets
+** Change op date format to "English format" dd/mm/yyyy
+** Remove the age, type and sex columns
+** Progress bar for completion of data entry
+** Default sort: date. Change sort with jquery plugin
+** Entire record background should be a link
+** Inline admining, remove the extra buttons
+** Dashboard - Numbers. For you personally only.
+**** Total number of ops
+**** Ops this calendar year, since Jan 1
+** Dashboard - Accuracy
+** Dashboard - Safety
+** Dashboard - Feedback
+* Think about moving away from UUIDs. 8 char hex?
+
+* Patient connection:
+** Goals:
+**** Survey to capture their views
+**** Build survey system. The poll system I described. Kids and adults based on questionnaires i will get emailed. Adminable.
+**** Redirect mail to nadeem on live. Ask bill.
+** Saved defaults for the comments field which should be called operation note.
+
+* Done
+** #1 Remove create kid dataset tab

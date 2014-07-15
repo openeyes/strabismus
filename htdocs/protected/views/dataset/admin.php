@@ -40,22 +40,24 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'dataset-grid',
 	'dataProvider'=>$model->search(),
+    'enableSorting' => true,
 	'filter'=>$model,
 	'columns'=>array(
 		array(
-		'name'=>'op_date',
-		'htmlOptions'=>array('width'=>'80px'),
+			'name'=>'op_date',
+			'htmlOptions'=>array('width'=>'80px'),
+			'value' => function(Dataset $model) {
+				return date("d/m/Y", strtotime($model->op_date));
+			},
+		),
+		array(
+			'header' => 'Completion Score',
+			'value' => function(Dataset $model) {
+				return $model->completionScore();
+			},
+			'type' => 'raw',
 		),
 		'uuid',
-		array(
-		'name'=>'pt_age',
-		'htmlOptions'=>array('width'=>'30px'),
-		),
-		array(
-		'name'=>'pt_sex',
-		'htmlOptions'=>array('width'=>'50px'),
-		),
-		'asmt_type',
 		/*
 		'pt_ethnic_group',
 		'asmt_date',

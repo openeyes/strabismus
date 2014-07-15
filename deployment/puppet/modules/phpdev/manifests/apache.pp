@@ -18,7 +18,7 @@ class phpdev::apache {
   }
   
   file { "local site":
-    path    => '/etc/apache2/sites-available/local',
+    path    => '/etc/apache2/sites-available/000-default',
     ensure  => 'present',
     source => "puppet:///modules/phpdev/local.site.conf",
     require => Package['apache2'],

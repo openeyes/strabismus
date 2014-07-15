@@ -20,12 +20,9 @@
         </div>
     </div>
 
-    <h3>Demographics:</h3>
-    <div class="twocolumndiv">
+    <h3 class="section-toggle">Demographics:</h3>
+    <div class="twocolumndiv toggled-section">
         <div class="leftcolumn">
-
-
-
             <div class="row">
                 <?php echo $form->labelEx($model,'pt_age'); ?>
                 <?php echo $form->textField($model,'pt_age',array('style'=>'width:40px')); ?>
@@ -56,7 +53,8 @@
         </div>
     </div>
 
-    <h3>Pre-operative assessment:</h3>
+    <h3 class="section-toggle">Pre-operative assessment:</h3>
+<div class="toggled-section">
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         	<div class="row">
@@ -95,12 +93,13 @@
 			</div>
 			
             <div class="row">
-                <?php echo $form->labelEx($model,'asmt_type'); ?>
-                <?php echo CHtml::dropDownList('exoDropDown', 'consecutive exotropia', $model->exotropiaArray(), array('style'=>'width:200px','onChange'=>'typeChange(this.value);')); ?>
-                <?php echo CHtml::dropDownList('esoDropDown', 'residual esotropia', $model->esotropiaArray(), array('style'=>'width:200px','onChange'=>'typeChange(this.value);')); ?>
+<?php echo $form->labelEx($model,'asmt_type', array('style' => 'float:none; display:inline-block; vertical-align:top;')); ?>
+	 <div style="display:inline-block;margin-left:-4px;">
+                <?php echo CHtml::dropDownList('exoDropDown', 'consecutive exotropia', $model->exotropiaArray(), array('style'=>'width:200px; display:block;','onChange'=>'typeChange(this.value);')); ?>
+                <?php echo CHtml::dropDownList('esoDropDown', 'residual esotropia', $model->esotropiaArray(), array('style'=>'width:200px; display:block','onChange'=>'typeChange(this.value);')); ?>
                  <?php echo $form->hiddenField($model,'asmt_type'); ?>
+	 </div>
             </div> 
-                        
         </div>
     </div>
     
@@ -321,8 +320,9 @@
         <div class="rightcolumn">
         </div>
     </div>
-    
-	<h3>Surgical planning:</h3>
+    </div>
+	<h3 class="section-toggle">Surgical planning:</h3>
+					 <div class="toggled-section">
 	<div class="twocolumndiv">
         <div class="leftcolumn">
         
@@ -384,8 +384,9 @@
 			
         </div>
     </div>
-
-    <h3>Operation:</h3>
+</div>
+    <h3 class="section-toggle">Operation:</h3>
+						<div class="toggled-section">
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         
@@ -612,14 +613,14 @@
     <div class="twocolumndiv">
         <div class="leftcolumn">
         
-        <div class="row" style="text-align:right; width: 170px;">        
+        <div id="opCompSection" style="display:block; text-align:right; width: 240px;">
+			
+        <div class="row">
             <?php echo $form->labelEx($model,'op_comp_none'); ?>
             <?php echo $form->checkBox($model,'op_comp_none', array('class'=>'checkBox', 'onChange'=>'compChange(this, "opCompSection");')); ?>
 			<?php echo $form->error($model,'op_comp_none'); ?>
 		</div>
 
-        <div id="opCompSection" style="display:block; text-align:right; width: 240px;">
-			
 	        <div class="row">        
 	            <?php echo $form->labelEx($model,'op_comp_wrong_side'); ?>
 	            <?php echo $form->checkBox($model,'op_comp_wrong_side', array('class'=>'checkBox')); ?>
@@ -672,8 +673,9 @@
         </div>
 
     </div>
-
-    <h3>Early post-operative assessment:</h3>
+</div>
+    <h3 class="section-toggle">Early post-operative assessment:</h3>
+    <div class="toggled-section">
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         	<div class="row">
@@ -793,9 +795,10 @@
         <div class="rightcolumn">
         </div>
     </div>
-             
+						</div>      
 
-    <h3>Late post-operative assessment:</h3>
+    <h3 class="section-toggle">Late post-operative assessment:</h3>
+						<div class="toggled-section">
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         	<div class="row">
@@ -1022,14 +1025,14 @@
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         
-	        <div class="row" style="text-align:right; width: 170px;">        
+		
+	        <div id="lateCompSection" style="display:block; text-align:right; width: 240px;">
+	        <div class="row">        
 	        	<!-- Complications -->
 	            <?php echo $form->labelEx($model,'late_comp_none'); ?>
 	            <?php echo $form->checkBox($model,'late_comp_none', array('class'=>'checkBox', 'onChange'=>'compChange(this, "lateCompSection");')); ?>
 				<?php echo $form->error($model,'late_comp_none'); ?>
 			</div>
-		
-	        <div id="lateCompSection" style="display:block; text-align:right; width: 240px;">
 		        <div class="row">        
 		            <?php echo $form->labelEx($model,'late_comp_slipped_muscle'); ?>
 		            <?php echo $form->checkBox($model,'late_comp_slipped_muscle', array('class'=>'checkBox')); ?>
@@ -1100,6 +1103,7 @@
 	        </div>
         </div>
     </div> 
+</div>
         
 	<div class="twocolumndiv">
         <div class="leftcolumn">

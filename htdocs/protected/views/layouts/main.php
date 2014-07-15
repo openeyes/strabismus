@@ -23,9 +23,9 @@
 	<!-- Put print style sheet last to avoid overiding of #page settings -->
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
 		
-    <script language="JavaScript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/strabismus.js" type="text/javascript"></script>
-
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/strabismus.js" type="text/javascript"></script>
+
 </head>
 
 <body>
