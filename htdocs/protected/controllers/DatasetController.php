@@ -15,6 +15,7 @@ class DatasetController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -31,7 +32,7 @@ class DatasetController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','admin','view'),
+				'actions'=>array('create','update'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -61,14 +62,14 @@ class DatasetController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Dataset;
+		$model=new AdultDataset;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Dataset']))
+		if(isset($_POST['AdultDataset']))
 		{
-			$model->attributes=$_POST['Dataset'];
+			$model->attributes=$_POST['AdultDataset'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -103,9 +104,9 @@ class DatasetController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Dataset']))
+		if(isset($_POST['AdultDataset']))
 		{
-			$model->attributes=$_POST['Dataset'];
+			$model->attributes=$_POST['AdultDataset'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -122,28 +123,19 @@ class DatasetController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+		$this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	/**
-	 * Lists all models associated with the current user.
+	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
-        $criteria = new CDbCriteria;
-		$criteria->addColumnCondition(array('userId' => Yii::app()->user->id));
-		$dataProvider=new CActiveDataProvider('Dataset',array('criteria'=>$criteria));
-   
+		$dataProvider=new CActiveDataProvider('AdultDataset');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -154,10 +146,10 @@ class DatasetController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Dataset('search');
+		$model=new AdultDataset('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Dataset']))
-			$model->attributes=$_GET['Dataset'];
+		if(isset($_GET['AdultDataset']))
+			$model->attributes=$_GET['AdultDataset'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -167,11 +159,13 @@ class DatasetController extends Controller
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
+	 * @param integer $id the ID of the model to be loaded
+	 * @return AdultDataset the loaded model
+	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Dataset::model()->findByPk($id);
+		$model=AdultDataset::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -179,36 +173,14 @@ class DatasetController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
+	 * @param AdultDataset $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='dataset-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='adult-dataset-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
-	
-	/**
-	* Function to generate a UUID
-	* Taken from http://php.net/manual/en/function.uniqid.php
-	*
-	* @return string
-	*/
-    public function uuid()
-    {
-        // version 4 UUID
-        return sprintf(
-             '%08x-%04x-%04x-%02x%02x-%012x',
-             mt_rand(),
-             mt_rand(0, 65535),
-             bindec(substr_replace(
-             sprintf('%016b', mt_rand(0, 65535)), '0100', 11, 4)
-             ),
-             bindec(substr_replace(sprintf('%08b', mt_rand(0, 255)), '01', 5, 2)),
-             mt_rand(0, 255),
-             mt_rand()
-        );
-    }
 }
