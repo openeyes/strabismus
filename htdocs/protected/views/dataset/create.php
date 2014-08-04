@@ -1,20 +1,18 @@
 <?php
+/* @var $this AdultDatasetController */
+/* @var $model AdultDataset */
+
 $this->breadcrumbs=array(
-	'Datasets'=>array('index'),
+	'Adult Datasets'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List Dataset', 'url'=>array('index')),
-	array('label'=>'Manage Dataset', 'url'=>array('admin')),
+	array('label'=>'List AdultDataset', 'url'=>array('index')),
+	array('label'=>'Manage AdultDataset', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create Dataset</h1>
+<h1>Create Adult Dataset</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
-
-<!-- Calls javascript to initialise page -->
-<?php
-    //Yii::app()->clientScript->registerScript('onLoadScript',"refInit();",CClientScript::POS_LOAD);
-?>

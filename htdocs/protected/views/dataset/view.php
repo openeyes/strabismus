@@ -1,255 +1,212 @@
 <?php
+/* @var $this AdultDatasetController */
+/* @var $model AdultDataset */
+
 $this->breadcrumbs=array(
-	'Datasets'=>array('index'),
-	'View',
+	'Adult Datasets'=>array('index'),
+	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'Update Dataset', 'url'=>array('dataset/update/'.$model->id)),
-	array('label'=>'Manage Datasets', 'url'=>array('admin')),
+	array('label'=>'List AdultDataset', 'url'=>array('index')),
+	array('label'=>'Create AdultDataset', 'url'=>array('create')),
+	array('label'=>'Update AdultDataset', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Delete AdultDataset', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Manage AdultDataset', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Operation Note</h1>
+<h1>View AdultDataset #<?php echo $model->id; ?></h1>
 
-<h5>Patient:</h5>
-<div class="twocolumndiv">
-    <div class="leftcolumn" style="height:150px;">
-        <img src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/label.gif" width="260" height="140"/>
-    </div>
-    <div class="rightcolumn">
-    
-        <table class="opnoteTable">
-	        <tbody>
-	        	<tr>
-	            	<td width="20%"><?php echo CHtml::activeLabel($model, 'uuid'); ?></td>
-	            	<td width="80%"><?php echo $model->uuid ?></td>
-	        	</tr>
-	        	<tr>
-	            	<td><?php echo CHtml::activeLabel($model, 'pt_age'); ?></td>
-	            	<td><?php echo $model->pt_age ?></td>
-	        	</tr>
-	        	<tr>
-	            	<td><?php echo CHtml::activeLabel($model, 'pt_sex'); ?></td>
-	            	<td><?php echo $model->pt_sex ?></td>
-	        	</tr>
-	        </tbody>
-	    </table>    
-
-    </div>
-</div>
-
-<h5>Pre-operative assessment:</h5>
-<div class="onecolumndiv">
-
-    <table class="opnoteTable">
-        <tbody>
-        	<tr>
-            	<td width="20%"><?php echo CHtml::activeLabel($model, 'asmt_cover_near'); ?></td>
-            	<td width="80%"><?php echo $model->asmt_cover_near; ?></td>
-        	</tr>
-        	<tr>
-            	<td width="20%"><?php echo CHtml::activeLabel($model, 'asmt_angle_near'); ?></td>
-            	<td width="80%"><?php echo $model->asmt_angle_near; ?></td>
-        	</tr>
-
-        	<tr>
-            	<td width="20%"><?php echo CHtml::activeLabel($model, 'asmt_cover_dist'); ?></td>
-            	<td width="80%"><?php echo $model->asmt_cover_dist; ?></td>
-        	</tr>
-        	<tr>
-            	<td width="20%"><?php echo CHtml::activeLabel($model, 'asmt_angle_dist'); ?></td>
-            	<td width="80%"><?php echo $model->asmt_angle_dist; ?></td>
-        	</tr>        	   
-        </tbody>
-    </table>
-    
-</div>
-
-<h5>Surgical planning:</h5>
-<div class="onecolumndiv">
-
-    <table class="opnoteTable">
-        <tbody>
-        	<tr>
-            	<td width="20%"><?php echo CHtml::activeLabel($model, 'plan_goals'); ?></td>
-            	<td width="80%"><?php echo $model->readableGoals(); ?></td>
-        	</tr>
-        	<tr>
-            	<td width="20%"><?php echo CHtml::activeLabel($model, 'plan_other'); ?></td>
-            	<td width="80%"><?php echo $model->plan_other; ?></td>
-        	</tr>
-        	<tr>
-            	<td><?php echo CHtml::activeLabel($model, 'plan_target_direction'); ?></td>
-            	<td><?php echo $model->plan_target_direction; ?></td>
-        	</tr>
-        	<tr>
-            	<td><?php echo CHtml::activeLabel($model, 'plan_target_angle'); ?></td>
-                <td><?php echo $model->plan_target_angle; ?></td>
-        	</tr>
-        	<tr>
-                <td><?php echo CHtml::activeLabel($model, 'plan_target_distance'); ?></td>
-                <td><?php echo $model->plan_target_distance; ?></td>
-        	</tr>
-        </tbody>
-    </table>
-    
-</div>
-
-<h5>Operation:</h5>
-<div class="twocolumndiv">
-    <div class="leftcolumn">
-    
-	    <table class="opnoteTable">
-	        <tbody>
-	        	<tr>
-	            	<td width="40%"><?php echo CHtml::activeLabel($model, 'op_date'); ?></td>
-	            	<td width="60%"><?php if (!is_null($model->op_date)) echo Yii::app()->dateFormatter->formatDateTime($model->op_date, 'medium', null) ; ?></td>
-	        	</tr>
-	        	<tr>
-	            	<td><?php echo CHtml::activeLabel($model, 'op_measurement_point'); ?></td>
-	            	<td><?php echo $model->op_measurement_point; ?></td>
-	        	</tr>
-	        </tbody>
-	    </table>    
-    </div>
-    <div class="rightcolumn">
-	    <table class="opnoteTable">
-	        <tbody>
-	        	<tr>
-	            	<td width="40%"><?php echo CHtml::activeLabel($model, 'op_surgeon_grade'); ?></td>
-	            	<td width="60%"><?php echo $model->op_surgeon_grade; ?></td>
-	        	</tr>
-	        	<tr>
-	            	<td><?php echo CHtml::activeLabel($model, 'op_assistant_grade'); ?></td>
-	            	<td><?php echo $model->op_assistant_grade; ?></td>
-	        	</tr>
-	        </tbody>
-	    </table>
-	     
-    </div>
-</div>
-
-<h5>Muscles:</h5>
-<div class="twocolumndiv">
-    <div class="leftcolumn">
-    
-      	<table class="muscles" cellspacing="0">
-    		<thead>
-    			<th width="5%">Muscle</th>
-    			<th width="70%">Surgery</th>
-    			<th width="10%">Amount</th>
-    			<th width="15%">Trans</th>
-    		</thead>
-			<tbody>
-	    	<?php
-	    		$showDiagram = false;
-	    		$muscleCodes = array('rmr','rir','rlr','rsr','rio','rso');
-	    		foreach ($muscleCodes as $muscle)
-	    		{
-	    			// Only print out results if muscles have been moved
-	    			$amount = "op_".$muscle."_amount";
-	    			if ($model->$amount != 0)
-	    			{
-	    				$showDiagram = true;
-		    			echo '
-		    	<tr>';
-		    			echo '
-		    		<td>'.strtoupper($muscle).'</td>';
-	
-		    			$prop = "op_".$muscle."_surgery";
-		    			echo '
-		    		<td>'.$model->$prop.'</td>';
-		    			
-		    			echo '
-		    		<td>'.$model->$amount.'</td>';
-		    			
-		    			if ($muscle == 'rmr' || $muscle == 'rlr')
-		    			{
-			    			$prop = "op_".$muscle."_transposition";
-			    			echo '
-			    	<td>'.$model->$prop.'</td>';
-		    			}
-		    			
-		    			echo '
-		    	</tr>';
-	    			}
-	    		}
-	    	?>
-
-			</tbody>
-    	</table>
-
-
-			
-    </div>
-    <div class="rightcolumn">
-
-      	<table cellspacing="0">
-    		<thead>
-    			<th width="5%">Muscle</th>
-    			<th width="70%">Surgery</th>
-    			<th width="10%">Amount</th>
-    			<th width="15%">Trans</th>
-    		</thead>
-			<tbody>
-	    	<?php
-	    		$showDiagram = false;
-	    		$muscleCodes = array('lmr','lir','llr','lsr','lio','lso');
-	    		foreach ($muscleCodes as $muscle)
-	    		{
-	    			// Only print out results if muscles have been moved
-	    			$amount = "op_".$muscle."_amount";
-	    			if ($model->$amount != 0)
-	    			{
-	    				$showDiagram = true;
-		    			echo '
-		    	<tr>';
-		    			echo '
-		    		<td>'.strtoupper($muscle).'</td>';
-	
-		    			$prop = "op_".$muscle."_surgery";
-		    			echo '
-		    		<td>'.$model->$prop.'</td>';
-		    			
-		    			echo '
-		    		<td>'.$model->$amount.'</td>';
-		    			
-		    			if ($muscle == 'lmr' || $muscle == 'llr')
-		    			{
-			    			$prop = "op_".$muscle."_transposition";
-			    			echo '
-			    	<td>'.$model->$prop.'</td>';
-		    			}
-		    			
-		    			echo '
-		    	</tr>';
-	    			}
-	    		}
-	    	?>
-
-			</tbody>
-    	</table>
-		    	 
-    </div>
-</div>
-
-<div class="twocolumndiv">
-    <div class="leftcolumn">
-    <h5>Complications:</h5>
-		<?php $labels = $model->attributeLabels(); ?>
-	    <?php if ($model->op_comp_none == 1) echo $labels['op_comp_none'].'<br/>'; ?>
-	    <?php if ($model->op_comp_wrong_side == 1) echo $labels['op_comp_wrong_side'].'<br/>'; ?>
-	    <?php if ($model->op_comp_wrong_direction == 1) echo $labels['op_comp_wrong_direction'].'<br/>'; ?>
-	    <?php if ($model->op_comp_globe_perf == 1) echo $labels['op_comp_globe_perf'].'<br/>'; ?>
-	    <?php if ($model->op_comp_snapped_muscle == 1) echo $labels['op_comp_snapped_muscle'].'<br/>'; ?>
-	    <?php if ($model->op_comp_lost_muscle == 1) echo $labels['op_comp_lost_muscle'].'<br/>'; ?>
-	    <?php if ($model->op_comp_bleeding == 1) echo $labels['op_comp_bleeding'].'<br/>'; ?>
-	    <?php if ($model->op_comp_other == 1) echo $labels['op_comp_other'].'<br/>'; ?>
-	    <?php echo $model->op_comps.'<br/>'; ?>
-    </div>
-    <div class="rightcolumn">
-    	<h5>Comments:</h5>
-	    <?php echo $model->op_comments.'<br/>'; ?>
-    </div>
-</div>
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		'id',
+		'userId',
+		'uuid',
+		'pt_age',
+		'pt_sex',
+		'pt_postcode',
+		'pt_ethnic_group',
+		'asmt_date',
+		'asmt_num_ops',
+		'asmt_category',
+		'asmt_type',
+		'asmt_other_eye_surg',
+		'asmt_orbital_surg',
+		'asmt_previous_toxin',
+		'asmt_other_eye_disease',
+		'asmt_neuro_disease',
+		'asmt_other',
+		'asmt_spectacle_wear',
+		'asmt_refraction_worn',
+		'asmt_sphere_right',
+		'asmt_cyl_right',
+		'asmt_axis_right',
+		'asmt_sphere_left',
+		'asmt_cyl_left',
+		'asmt_axis_left',
+		'asmt_near_right',
+		'asmt_near_left',
+		'asmt_bcva_let_right',
+		'asmt_bcva_let_left',
+		'asmt_bcva_kay_right',
+		'asmt_bcva_kay_left',
+		'asmt_fixation_right',
+		'asmt_fixation_left',
+		'asmt_cover_hor_dist',
+		'asmt_hor_angle_dist',
+		'asmt_cover_vert_dist',
+		'asmt_ver_angle_dist',
+		'asmt_cover_hor_near',
+		'asmt_angle_near',
+		'asmt_cover_vert_near',
+		'asmt_ver_angle_near',
+		'asmt_pattern',
+		'asmt_ahp_present',
+		'asmt_ahp_desc',
+		'asmt_ahp_angle',
+		'asmt_binoc_with_cor',
+		'asmt_binoc_without_cor',
+		'asmt_torsion',
+		'asmt_diplopia',
+		'asmt_stereo_present',
+		'asmt_stereo_frisby',
+		'asmt_stereo_tno',
+		'asmt_stereo_lang',
+		'asmt_newcastle_home',
+		'asmt_newcastle_near',
+		'asmt_newcastle_distance',
+		'asmt_IXTQ',
+		'asmt_amblyopia',
+		'asmt_amblyopia_treatment',
+		'asmt_notes',
+		'plan_goals',
+		'plan_other',
+		'plan_position',
+		'plan_eccentric',
+		'plan_distance',
+		'plan_hor_target_direction',
+		'plan_hor_target_angle',
+		'plan_ver_target_direction',
+		'plan_ver_target_angle',
+		'plan_torsion',
+		'op_date',
+		'op_anaeshetic',
+		'op_surgeon_grade',
+		'op_assistant_grade',
+		'op_measurement_point',
+		'op_rmr_surgery',
+		'op_rmr_amount',
+		'op_rmr_transposition',
+		'op_rir_surgery',
+		'op_rir_amount',
+		'op_rir_transposition',
+		'op_rlr_surgery',
+		'op_rlr_amount',
+		'op_rlr_transposition',
+		'op_rsr_surgery',
+		'op_rsr_amount',
+		'op_rsr_transposition',
+		'op_lmr_surgery',
+		'op_lmr_amount',
+		'op_lmr_transposition',
+		'op_lir_surgery',
+		'op_lir_amount',
+		'op_lir_transposition',
+		'op_llr_surgery',
+		'op_llr_amount',
+		'op_llr_transposition',
+		'op_lsr_surgery',
+		'op_lsr_amount',
+		'op_lsr_transposition',
+		'op_rio_surgery',
+		'op_rio_position',
+		'op_rio_transposition',
+		'op_rio_amount',
+		'op_rso_surgery',
+		'op_rso_amount',
+		'op_lio_surgery',
+		'op_lio_position',
+		'op_lio_transposition',
+		'op_lio_amount',
+		'op_lso_surgery',
+		'op_lso_amount',
+		'op_eyedraw_right',
+		'op_eyedraw_left',
+		'op_comps',
+		'op_comp_none',
+		'op_comp_wrong_side',
+		'op_comp_wrong_direction',
+		'op_comp_globe_perf',
+		'op_comp_snapped_muscle',
+		'op_comp_lost_muscle',
+		'op_comp_bleeding',
+		'op_comp_other',
+		'op_comments',
+		'early_date',
+		'early_bcva_let_right',
+		'early_bcva_let_left',
+		'early_bcva_kay_right',
+		'early_bcva_kay_left',
+		'early_fixation_right',
+		'early_fixation_left',
+		'early_cover_hor_dist',
+		'early_hor_angle_dist',
+		'early_cover_vert_dist',
+		'early_ver_angle_dist',
+		'early_cover_hor_near',
+		'early_angle_near',
+		'early_cover_vert_near',
+		'early_ver_angle_near',
+		'early_notes',
+		'late_date',
+		'late_bcva_let_right',
+		'late_bcva_let_left',
+		'late_bcva_kay_right',
+		'late_bcva_kay_left',
+		'late_fixation_right',
+		'late_fixation_left',
+		'late_cover_hor_dist',
+		'late_hor_angle_dist',
+		'late_cover_vert_dist',
+		'late_ver_angle_dist',
+		'late_cover_hor_near',
+		'late_angle_near',
+		'late_cover_vert_near',
+		'late_ver_angle_near',
+		'late_notes',
+		'late_pattern',
+		'late_stereo_present',
+		'late_stereo_frisby',
+		'late_stereo_tno',
+		'late_stereo_lang',
+		'late_newcastle_home',
+		'late_newcastle_near',
+		'late_newcastle_distance',
+		'late_IXTQ',
+		'late_amblyopia',
+		'late_ahp_present',
+		'late_ahp_desc',
+		'late_ahp_angle',
+		'late_diplopia',
+		'late_torsion',
+		'late_comp_none',
+		'late_comp_slipped_muscle',
+		'late_comp_rrd',
+		'late_comp_orb_inf',
+		'late_comp_scleritis',
+		'late_comp_endophthalmitis',
+		'late_comp_antseg_ischaemia',
+		'late_comp_iatrogenic_diplopia',
+		'late_comp_new_amblyopia',
+		'late_comp_unscheduled_clinic',
+		'late_comp_clinic_cause',
+		'late_comp_unscheduled_theatre',
+		'late_comp_theatre_cause',
+		'late_comments',
+		'prom_as20_preop',
+		'prom_as20_postop',
+		'prom_likert',
+	),
+)); ?>

@@ -1,18 +1,21 @@
 <?php
+/* @var $this AdultDatasetController */
+/* @var $model AdultDataset */
+
 $this->breadcrumbs=array(
-	'Datasets'=>array('index'),
+	'Adult Datasets'=>array('index'),
 	$model->id=>array('view','id'=>$model->id),
 	'Update',
 );
 
 $this->menu=array(
-	array('label'=>'List Dataset', 'url'=>array('index')),
-	array('label'=>'Create Dataset', 'url'=>array('create')),
-	array('label'=>'View Dataset', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Dataset', 'url'=>array('admin')),
+	array('label'=>'List AdultDataset', 'url'=>array('index')),
+	array('label'=>'Create AdultDataset', 'url'=>array('create')),
+	array('label'=>'View AdultDataset', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'Manage AdultDataset', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Update Dataset <?php echo $model->id; ?></h1>
+<h1>Update AdultDataset <?php echo $model->id; ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

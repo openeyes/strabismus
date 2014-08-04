@@ -1,12 +1,18 @@
+<?php
+/* @var $this AdultDatasetController */
+/* @var $model AdultDataset */
+/* @var $form CActiveForm */
+?>
+
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'dataset-form',
+	'id'=>'adult-dataset-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 
 	<?php echo $form->errorSummary($model); ?>
-	
+
     <div class="row">
         <?php echo $form->labelEx($model,'uuid',array('class'=>'reval')); ?>
         <?php echo $form->textField($model,'uuid',array('style'=>'width:280px','readonly'=>'readonly')); //, 'readonly'=>'readonly'?>
@@ -20,9 +26,10 @@
         </div>
     </div>
 
-    <h3 class="section-toggle">Demographics:</h3>
-    <div class="twocolumndiv toggled-section">
+    <h3>Demographics:</h3>
+    <div class="twocolumndiv">
         <div class="leftcolumn">
+
             <div class="row">
                 <?php echo $form->labelEx($model,'pt_age'); ?>
                 <?php echo $form->textField($model,'pt_age',array('style'=>'width:40px')); ?>
@@ -46,15 +53,235 @@
 
 			<div class="row">
 				<?php echo $form->labelEx($model,'pt_ethnic_group'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'pt_ethnic_group', array()); ?>
+				<?php echo ZHtml::enumDropDownList($model,'pt_ethnic_group', array('style'=>'width:200px')); ?>
 				<?php echo $form->error($model,'pt_ethnic_group'); ?>
 			</div>
 			
         </div>
     </div>
+    
+    <h3>Classification:</h3>
+    <div class="twocolumndiv">
+        <div class="leftcolumn">
 
-    <h3 class="section-toggle">Pre-operative assessment:</h3>
-<div class="toggled-section">
+			<div class="row">
+				<?php echo $form->labelEx($model,'asmt_category'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'asmt_category', array('style'=>'width:200px','onChange'=>'categoryChange(this);')); ?>
+				<?php echo $form->error($model,'asmt_category'); ?>
+			</div>     
+
+        </div>
+        <div class="rightcolumn">
+
+            <div class="row">
+                <?php echo $form->labelEx($model,'asmt_type'); ?>
+                <?php echo CHtml::dropDownList('typeDropDown', 'hi', $model->exotropiaArray(), array('style'=>'width:200px','onChange'=>'adultTypeChange(this.value);')); ?>
+                 <?php echo $form->hiddenField($model,'asmt_type'); ?>
+            </div> 
+			
+        </div>
+    </div>
+
+    <h3>Co-factors:</h3>
+    <div class="twocolumndiv">
+        <div class="leftcolumn">
+
+			<div class="row">
+				<?php echo $form->labelEx($model,'asmt_num_ops'); ?>
+				<?php echo $form->textField($model,'asmt_num_ops',array('style'=>'width:40px')); ?>
+				<?php echo $form->error($model,'asmt_num_ops'); ?>
+			</div>
+			
+			<div class="row">
+		        <?php echo $form->labelEx($model,'asmt_other_eye_surg'); ?>
+	            <?php echo CHtml::dropDownList('ocularSurgeryDropDown', '', $model->ocularSurgeryArray(), array('style'=>'width:200px','onChange'=>'addToTextarea(this.id, "AdultDataset_asmt_other_eye_surg")')); ?>
+	            <label for="AdultDataset_asmt_other_eye_surg"></label>
+				<?php echo $form->textArea($model,'asmt_other_eye_surg',array('rows'=>1, 'cols'=>25)); ?>
+				<?php echo $form->error($model,'asmt_other_eye_surg'); ?>
+			</div>
+			
+			<div class="row">
+		        <?php echo $form->labelEx($model,'asmt_orbital_surg'); ?>
+	            <?php echo CHtml::dropDownList('orbitalSurgeryDropDown', '', $model->orbitalSurgeryArray(), array('style'=>'width:200px','onChange'=>'addToTextarea(this.id, "AdultDataset_asmt_orbital_surg")')); ?>
+	            <label for="AdultDataset_asmt_other_eye_surg"></label>
+				<?php echo $form->textArea($model,'asmt_orbital_surg',array('rows'=>1, 'cols'=>25)); ?>
+				<?php echo $form->error($model,'asmt_orbital_surg'); ?>
+			</div>
+			
+			<!-- Previous toxin treatment -->
+		   	<div class="row">
+	            <?php echo $form->labelEx($model,'asmt_previous_toxin', array()); ?>
+	            <?php echo $form->checkBox($model,'asmt_previous_toxin', array('class'=>'checkBox')); ?>
+	            <?php echo $form->error($model,'asmt_previous_toxin'); ?>
+	        </div>
+			
+        </div>
+        <div class="rightcolumn">
+
+			<div class="row">
+		        <?php echo $form->labelEx($model,'asmt_other_eye_disease'); ?>
+	            <?php echo CHtml::dropDownList('eyeDiseaseDropDown', '', $model->eyeDiseaseSurgeryArray(), array('style'=>'width:200px','onChange'=>'addToTextarea(this.id, "AdultDataset_asmt_other_eye_disease")')); ?>
+	            <label for="AdultDataset_asmt_other_eye_surg"></label>
+				<?php echo $form->textArea($model,'asmt_other_eye_disease',array('rows'=>1, 'cols'=>25)); ?>
+				<?php echo $form->error($model,'asmt_other_eye_disease'); ?>
+			</div>
+
+			<div class="row">
+		        <?php echo $form->labelEx($model,'asmt_neuro_disease'); ?>
+				<?php echo $form->textArea($model,'asmt_neuro_disease',array('rows'=>2, 'cols'=>25)); ?>
+				<?php echo $form->error($model,'asmt_neuro_disease'); ?>
+			</div>
+
+			<div class="row">
+		        <?php echo $form->labelEx($model,'asmt_other'); ?>
+				<?php echo $form->textArea($model,'asmt_other',array('rows'=>2, 'cols'=>25)); ?>
+				<?php echo $form->error($model,'asmt_other'); ?>
+			</div>						
+        </div>
+    </div>
+
+	<table><tr><td width="80%">
+    <h3>Surgical Planning:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('surg_plan');">
+		<img id="surg_planImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="surg_planImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+	
+ 	<span id='surg_plan' style="display:none;">
+    <h4 style='margin-left:20px;'>Goals:</h4>
+	<div class="twocolumndiv" style="border-bottom: none;">
+        <div class="leftcolumn">
+        
+        	<div class="row">
+		        <?php echo $form->labelEx($model,'plan_goals'); ?>
+	            <?php echo CHtml::dropDownList('goalDropDown', '', $model->adultGoalArray(), array('style'=>'width:200px','onChange'=>'addToTextarea(this.id, "AdultDataset_plan_goals")')); ?>
+	            <label for="AdultDataset_asmt_other_eye_surg"></label>
+				<?php echo $form->textArea($model,'plan_goals',array('rows'=>1, 'cols'=>25)); ?>
+				<?php echo $form->error($model,'plan_goals'); ?>
+            </div>
+            
+        </div>
+        
+        <div class="rightcolumn">      
+
+<!--
+			<div class="row">
+		        <?php echo $form->labelEx($model,'plan_other'); ?>
+				<?php echo $form->textArea($model,'plan_other',array('rows'=>2, 'cols'=>25)); ?>
+				<?php echo $form->error($model,'plan_other'); ?>
+			</div>
+-->
+			                        
+        </div>
+        
+    </div>
+
+	<h4 style='margin-left:20px;'>Targets:</h4>    
+	<div class="twocolumndiv" style="border-bottom: none;">
+        <div class="leftcolumn">
+        
+			<div class="row">
+				<?php echo $form->labelEx($model,'plan_position'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'plan_position', array('style'=>'width:200px','onChange'=>'setEccentric(this.value, "setEccentricDiv");')); ?>
+				<?php echo $form->error($model,'plan_position'); ?>
+			</div> 
+			    
+        </div>
+        
+        <div class="rightcolumn">
+          
+ 			<div class="row" id="setEccentricDiv" style="display:none;">
+				<?php echo $form->labelEx($model,'plan_eccentric'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'plan_eccentric', array('style'=>'width:200px')); ?>
+				<?php echo $form->error($model,'plan_eccentric'); ?>
+			</div> 
+			                        
+        </div>
+    </div>
+    
+	<div class="twocolumndiv" style="border-bottom: none;">
+        <div class="leftcolumn">
+        
+			<div class="row">
+				<?php echo $form->labelEx($model,'plan_distance'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'plan_distance', array('style'=>'width:200px')); ?>
+				<?php echo $form->error($model,'plan_distance'); ?>
+			</div> 
+			    
+        </div>
+        
+        <div class="rightcolumn">                   
+        </div>
+    </div>
+
+	<div class="twocolumndiv" style="border-bottom: none;">
+        <div class="leftcolumn">
+        
+			<div class="row">
+				<?php echo $form->labelEx($model,'plan_hor_target_direction'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'plan_hor_target_direction', array('style'=>'width:200px')); ?>
+				<?php echo $form->error($model,'plan_hor_target_direction'); ?>
+			</div> 
+			    
+        </div>
+        
+        <div class="rightcolumn">
+        
+			<div class="row">
+				<?php echo $form->labelEx($model,'plan_hor_target_angle'); ?>
+				<?php echo $form->textField($model,'plan_hor_target_angle',array('style'=>'width:40px')); ?>
+				<?php echo $form->error($model,'plan_hor_target_angle'); ?>
+			</div>
+			                   
+        </div>
+    </div>
+
+	<div class="twocolumndiv">
+        <div class="leftcolumn">
+        
+			<div class="row">
+				<?php echo $form->labelEx($model,'plan_ver_target_direction'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'plan_ver_target_direction', array('style'=>'width:200px')); ?>
+				<?php echo $form->error($model,'plan_ver_target_direction'); ?>
+			</div> 
+			    
+        </div>
+        
+        <div class="rightcolumn">
+        
+			<div class="row">
+				<?php echo $form->labelEx($model,'plan_ver_target_angle'); ?>
+				<?php echo $form->textField($model,'plan_ver_target_angle',array('style'=>'width:40px')); ?>
+				<?php echo $form->error($model,'plan_ver_target_angle'); ?>
+				Torsion = 0
+	            <?php //echo $form->labelEx($model,'plan_zero_torsion', array()); ?>
+	            <?php echo $form->checkBox($model,'plan_zero_torsion', array('class'=>'checkBox')); ?>
+			</div>
+			
+<!--
+			<div class="row">
+	            <?php echo $form->labelEx($model,'plan_zero_torsion', array()); ?>
+	            <?php echo $form->checkBox($model,'plan_zero_torsion', array('class'=>'checkBox')); ?>
+	            <?php echo $form->error($model,'plan_zero_torsion'); ?>
+	        </div>
+-->
+			                   
+        </div>
+    </div>
+ 	</span>		              
+    
+	<table><tr><td width="80%">
+    <h3>Pre-operative assessment:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('pre_op');">
+		<img id="pre_opImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="pre_opImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+	
+ 	<span id='pre_op' style="display:none;">
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         	<div class="row">
@@ -74,94 +301,27 @@
                     )); ?>
                 <?php echo $form->error($model,'asmt_date'); ?>
             </div>
-            
-			<div class="row">
-				<?php echo $form->labelEx($model,'asmt_num_ops'); ?>
-				<?php echo $form->textField($model,'asmt_num_ops',array('style'=>'width:40px')); ?>
-				<?php echo $form->error($model,'asmt_num_ops'); ?>
-			</div>
 			
         </div>
 
         
         <div class="rightcolumn">      
 
-			<div class="row">
-				<?php echo $form->labelEx($model,'asmt_category'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'asmt_category', array('onChange'=>'categoryChange(this);')); ?>
-				<?php echo $form->error($model,'asmt_category'); ?>
-			</div>
+
 			
-            <div class="row">
-<?php echo $form->labelEx($model,'asmt_type', array('style' => 'float:none; display:inline-block; vertical-align:top;')); ?>
-	 <div style="display:inline-block;margin-left:-4px;">
-                <?php echo CHtml::dropDownList('exoDropDown', 'consecutive exotropia', $model->exotropiaArray(), array('style'=>'width:200px; display:block;','onChange'=>'typeChange(this.value);')); ?>
-                <?php echo CHtml::dropDownList('esoDropDown', 'residual esotropia', $model->esotropiaArray(), array('style'=>'width:200px; display:block','onChange'=>'typeChange(this.value);')); ?>
-                 <?php echo $form->hiddenField($model,'asmt_type'); ?>
-	 </div>
-            </div> 
+
+                        
         </div>
     </div>
-    
-  	<div class="twocolumndiv" style="border-bottom: none;">
-        <div class="leftcolumn">
-        
-            <div class="row">
-        		<label style="margin-right:235px;">Right eye:</label><br/>
-        	</div>
-            <div class="eye">
-	        	<div class="row">
-	        		<label>BCVA Letters</label>
-	        		<?php echo $form->textField($model,'asmt_bcva_let_right',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'asmt_bcva_let_right'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>BCVA Kay pictures</label>
-	        		<?php echo $form->textField($model,'asmt_bcva_kay_right',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'asmt_bcva_kay_right'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>Fixation</label>
-	        		<?php echo ZHtml::enumDropDownList($model,'asmt_fixation_right', array()); ?>
-			        <?php echo $form->error($model,'asmt_fixation_right'); ?>
-	        	</div>
-            </div>
 
-        </div>
-        
-        <div class="rightcolumn">     
 
-        	<div class="row">
-        		<label style="margin-right:235px;">Left eye:</label><br/>
-        	</div>
-        	<div class="eye">
-	        	<div class="row">
-	        		<label>BCVA Letters</label>
-	        		<?php echo $form->textField($model,'asmt_bcva_let_left',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'asmt_bcva_let_left'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>BCVA Kay pictures</label>
-	        		<?php echo $form->textField($model,'asmt_bcva_kay_left',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'asmt_bcva_kay_left'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>Fixation</label>
-	        		<?php echo ZHtml::enumDropDownList($model,'asmt_fixation_left', array()); ?>
-			        <?php echo $form->error($model,'asmt_fixation_left'); ?>
-	        	</div>
-        	</div>
-        	
-        </div>
-    </div>
-    
   	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         
         	<div class="row">
-				<?php echo $form->labelEx($model,'asmt_cover_near'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'asmt_cover_near', array()); ?>
-				<?php echo $form->error($model,'asmt_cover_near'); ?>
+				<?php echo $form->labelEx($model,'asmt_cover_hor_near'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'asmt_cover_hor_near', array()); ?>
+				<?php echo $form->error($model,'asmt_cover_hor_near'); ?>
 			</div>
 
 		   	<div class="row">
@@ -171,27 +331,51 @@
 		   	</div>
 		   				
 		   	<div class="row">
-            	<?php echo $form->labelEx($model,'asmt_cover_dist'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'asmt_cover_dist', array()); ?>
-				<?php echo $form->error($model,'asmt_cover_dist'); ?>
+            	<?php echo $form->labelEx($model,'asmt_cover_vert_near'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'asmt_cover_vert_near', array()); ?>
+				<?php echo $form->error($model,'asmt_cover_vert_near'); ?>
 		   	</div>
 
 		   	<div class="row">
-				<?php echo $form->labelEx($model,'asmt_angle_dist'); ?>
-			    <?php echo $form->textField($model,'asmt_angle_dist'); ?>
-				<?php echo $form->error($model,'asmt_angle_dist'); ?>
-		   	</div>
-		   			   	
-		   	<div class="row">
-            	<?php echo $form->labelEx($model,'asmt_pattern'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'asmt_pattern', array()); ?>
-				<?php echo $form->error($model,'asmt_pattern'); ?>
+				<?php echo $form->labelEx($model,'asmt_ver_angle_near'); ?>
+			    <?php echo $form->textField($model,'asmt_ver_angle_near'); ?>
+				<?php echo $form->error($model,'asmt_ver_angle_near'); ?>
 		   	</div>
 		
         </div>
         <div class="rightcolumn">
 		
-			<!-- Abnormal head posture -->
+        	<div class="row">
+				<?php echo $form->labelEx($model,'asmt_cover_hor_dist'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'asmt_cover_hor_dist', array()); ?>
+				<?php echo $form->error($model,'asmt_cover_hor_dist'); ?>
+			</div>
+
+		   	<div class="row">
+	            <?php echo $form->labelEx($model,'asmt_hor_angle_dist'); ?>
+			    <?php echo $form->textField($model,'asmt_hor_angle_dist'); ?>
+				<?php echo $form->error($model,'asmt_hor_angle_dist'); ?>
+		   	</div>
+		   				
+		   	<div class="row">
+            	<?php echo $form->labelEx($model,'asmt_cover_vert_dist'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'asmt_cover_vert_dist', array()); ?>
+				<?php echo $form->error($model,'asmt_cover_vert_dist'); ?>
+		   	</div>
+
+		   	<div class="row">
+				<?php echo $form->labelEx($model,'asmt_ver_angle_dist'); ?>
+			    <?php echo $form->textField($model,'asmt_ver_angle_dist'); ?>
+				<?php echo $form->error($model,'asmt_ver_angle_dist'); ?>
+		   	</div>
+	          
+        </div>
+		                
+	</div>
+
+	<div class="twocolumndiv" style="border-bottom: none;">
+    	<div class="leftcolumn">
+    		<!-- Abnormal head posture -->
 		   	<div class="row">
 	            <?php echo $form->labelEx($model,'asmt_ahp_present', array('style'=>'width:170px')); ?>
 	            <?php echo $form->checkBox($model,'asmt_ahp_present', array('class'=>'checkBox', 'onChange'=>'ahpChange(this,"asmtAhpSection");')); ?>
@@ -212,14 +396,70 @@
 					<?php echo $form->error($model,'asmt_ahp_angle'); ?>
 				</div>
 	        </div>
-	        
-	        <div class="row">        
-	        	<!-- Diplopia -->
-	            <?php echo $form->labelEx($model,'asmt_diplopia', array('style'=>'width:170px')); ?>
-	            <?php echo $form->checkBox($model,'asmt_diplopia', array('class'=>'checkBox')); ?>
+        </div>
+        <div class="rightcolumn">
+    		<div class="row">
+            	<?php echo $form->labelEx($model,'asmt_pattern'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'asmt_pattern', array()); ?>
+				<?php echo $form->error($model,'asmt_pattern'); ?>
+		   	</div>
+        </div>
+    </div>
+
+	<div class="twocolumndiv" style="border-bottom: none;">
+    	<div class="leftcolumn">
+    	
+			<div class="row">
+				<?php echo $form->labelEx($model,'asmt_binoc_with_cor', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'asmt_binoc_with_cor', array('class'=>'checkBox')); ?>
+				<?php echo $form->error($model,'asmt_binoc_with_cor'); ?>
+			</div>
+		
+			<div class="row">
+				<?php echo $form->labelEx($model,'asmt_binoc_without_cor', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'asmt_binoc_without_cor', array('class'=>'checkBox')); ?>
+				<?php echo $form->error($model,'asmt_binoc_without_cor'); ?>
+			</div>
+		
+			<div class="row">
+				<?php echo $form->labelEx($model,'asmt_torsion_sub', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'asmt_torsion_sub', array('class'=>'checkBox')); ?>
+				<?php echo $form->error($model,'asmt_torsion_sub'); ?>
+			</div>
+			
+			<div class="row">
+				<?php echo $form->labelEx($model,'asmt_torsion', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'asmt_torsion', array('class'=>'checkBox', 'onChange'=>'ahpChange(this,"asmtTorSection");')); ?>
+				<?php echo $form->error($model,'asmt_torsion'); ?>
+			</div>
+			
+			<div class="onecolumndivindented" id="asmtTorSection" style="display:none;">
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'asmt_torsion_side'); ?>
+					<?php echo ZHtml::enumDropDownList($model,'asmt_torsion_side', array()); ?>
+					<?php echo $form->error($model,'asmt_torsion_side'); ?>
+				</div>
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'asmt_torsion_clock'); ?>
+					<?php echo ZHtml::enumDropDownList($model,'asmt_torsion_clock', array()); ?>
+					<?php echo $form->error($model,'asmt_torsion_clock'); ?>
+				</div>
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'asmt_torsion_amt'); ?>
+				    <?php echo $form->textField($model,'asmt_torsion_amt',array('style'=>'width:40px')); ?>
+					<?php echo $form->error($model,'asmt_torsion_amt'); ?>
+				</div>
+	        </div>
+		
+			<div class="row">
+				<?php echo $form->labelEx($model,'asmt_diplopia', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'asmt_diplopia', array('class'=>'checkBox')); ?>
 				<?php echo $form->error($model,'asmt_diplopia'); ?>
 			</div>
-	
+
+ 	
+        </div>
+        <div class="rightcolumn">
 			<!-- Stereo acuity -->
 		   	<div class="row">
 	            <?php echo $form->labelEx($model,'asmt_stereo_present', array('style'=>'width:170px')); ?>
@@ -247,146 +487,1748 @@
 					<?php echo $form->error($model,'asmt_stereo_lang'); ?>
 				</div>
 	        </div>
-	
-	        <!-- Newcastle section -->
-        	<div  class="row" id="newcastleSectionLabel" style="display:none;">   
-	        	<label style='width:170px; margin-right:185px;')>Intermittant Exotropia only:</label><br/>
-        	</div>
-        	
-	        <div class="onecolumndivindented" id="newcastleSection" style="display:none;">
-	
-	        	<div class="row">        
-		            <?php echo $form->labelEx($model,'asmt_newcastle_home', array('style'=>'width:90px')); ?>
-					<?php echo ZHtml::enumDropDownList($model,'asmt_newcastle_home', array()); ?>
-					<?php echo $form->error($model,'asmt_newcastle_home'); ?>
-				</div>
-	        	
-		        <div class="row">        
-		            <?php echo $form->labelEx($model,'asmt_newcastle_near', array('style'=>'width:90px')); ?>
-					<?php echo ZHtml::enumDropDownList($model,'asmt_newcastle_near', array()); ?>
-					<?php echo $form->error($model,'asmt_newcastle_near'); ?>
-				</div>
-		
-		        <div class="row">        
-		            <?php echo $form->labelEx($model,'asmt_newcastle_distance', array('style'=>'width:90px')); ?>
-					<?php echo ZHtml::enumDropDownList($model,'asmt_newcastle_distance', array()); ?>
-					<?php echo $form->error($model,'asmt_newcastle_distance'); ?>
-				</div>
-	
-		        <div class="row">        
-		            <?php echo $form->labelEx($model,'asmt_IXTQ', array('style'=>'width:90px')); ?>
-				    <?php echo $form->textField($model,'asmt_IXTQ',array('style'=>'width:40px')); ?>
-					<?php echo $form->error($model,'asmt_IXTQ'); ?>
-				</div>
-						
-			</div>
-				        
-	        <div class="row">        
-	        	<!-- Amblyopia -->
-	            <?php echo $form->labelEx($model,'asmt_amblyopia', array('style'=>'width:170px')); ?>
-				<?php echo ZHtml::enumDropDownList($model,'asmt_amblyopia', array('onChange'=>'amblyopiaChange(this.value);')); ?>
-				<?php echo $form->error($model,'asmt_amblyopia'); ?>
-			</div>
-	
-	        <div class="onecolumndivindented" id="amblyopiaSection" style="display:none;">
-		        <div class="row">        
-		        	<!-- Amblyopia treatment-->
-		            <?php echo $form->labelEx($model,'asmt_amblyopia_treatment'); ?>
-					<?php echo ZHtml::enumDropDownList($model,'asmt_amblyopia_treatment', array()); ?>
-					<?php echo $form->error($model,'asmt_amblyopia_treatment'); ?>
-				</div>
-	        </div>
 	        
-			<!-- Prior toxin treatment -->
-		   	<div class="row">
-	            <?php echo $form->labelEx($model,'asmt_prior_toxin', array('style'=>'width:170px')); ?>
-	            <?php echo $form->checkBox($model,'asmt_prior_toxin', array('class'=>'checkBox')); ?>
-	            <?php echo $form->error($model,'asmt_prior_toxin'); ?>
-	        </div>
-	        
-			<!-- Notes -->        
+	        <h5>AS-20 score:</h5>
 	        <div class="row">
-	            <?php echo $form->labelEx($model,'asmt_notes', array('style'=>'width:50px')); ?>
-	            <?php echo $form->textArea($model, 'asmt_notes', array('rows'=>3, 'cols'=>30)); ?>
-	            <?php echo $form->error($model,'asmt_notes'); ?>
-	        </div>
-        </div>
-		                
-	</div>
-
-	<div class="twocolumndiv">
-    	<div class="leftcolumn">
-        </div>
-        <div class="rightcolumn">
-        </div>
-    </div>
-    </div>
-	<h3 class="section-toggle">Surgical planning:</h3>
-					 <div class="toggled-section">
-	<div class="twocolumndiv">
-        <div class="leftcolumn">
-        
-        	<?php echo CHtml::dropDownList('goalSelect',null, $model->goalArray(), array('onchange'=>'addGoal();')); ?>
-			<table name="table" id="goalTable" align="left" cellspacing="0" width="300">
-			    <tbody id="tableBody">
-			    
-	                <?php
-	                
-	                // Write out existing goals into a table
-	                $goals = $model->plan_goals;
-	                if (strlen($goals) > 3)
-	                {
-		                $goalArray = explode("||", $goals);
-		                
-		                foreach($goalArray as $goal)
-		                {
-		                	$goal = str_replace('|', '', $goal);
-		                	
-		                    echo '
-		                    <tr>
-		                    <td>'.$goal.'</td>
-		                    <td><a onclick="deleteGoal(this);">Delete</a></td></tr>';
-		                }
-	                }
-	                ?>
-			    </tbody>
-			</table>
-			</br>
-			<?php echo $form->hiddenField($model,'plan_goals'); ?>
-			
-			<!-- Details -->        
-	        <div class="row">
-	            <?php echo $form->labelEx($model,'plan_other', array('style'=>'width:50px')); ?>
-	            <?php echo $form->textArea($model, 'plan_other', array('rows'=>3, 'cols'=>30)); ?>
-	            <?php echo $form->error($model,'plan_other'); ?>
-	        </div>
-			       	
-        </div>
-        <div class="rightcolumn">
-
-			<div class="row">
-				<?php echo $form->labelEx($model,'plan_target_direction', array('style'=>'width:100px')); ?>
-				<?php echo ZHtml::enumDropDownList($model,'plan_target_direction', array()); ?>
-				<?php echo $form->error($model,'plan_target_direction'); ?>
-			</div>
-			
-            <div class="row">
-                <?php echo $form->labelEx($model,'plan_target_angle', array('style'=>'width:100px')); ?>
-                <?php echo $form->textField($model,'plan_target_angle',array('style'=>'width:40px')); ?>
-                <?php echo $form->error($model,'plan_target_angle'); ?>
+                <?php echo $form->labelEx($model,'asmt_psychosocial'); ?>
+                <?php echo $form->textField($model,'asmt_psychosocial',array('style'=>'width:30px')); ?>
+                <?php echo $form->error($model,'asmt_psychosocial'); ?>
             </div>
-
-			<div class="row">
-				<?php echo $form->labelEx($model,'plan_target_distance', array('style'=>'width:100px')); ?>
-				<?php echo ZHtml::enumDropDownList($model,'plan_target_distance', array()); ?>
-				<?php echo $form->error($model,'plan_target_distance'); ?>
-			</div>
-			
+ 
+ 	        <div class="row">
+                <?php echo $form->labelEx($model,'asmt_functional'); ?>
+                <?php echo $form->textField($model,'asmt_functional',array('style'=>'width:30px')); ?>
+                <?php echo $form->error($model,'asmt_functional'); ?>
+            </div>
+            
+	        <div class="row">
+                <?php echo $form->labelEx($model,'asmt_total'); ?>
+                <?php echo $form->textField($model,'asmt_total',array('style'=>'width:30px')); ?>
+                <?php echo $form->error($model,'asmt_total'); ?>
+            </div>  
+            
         </div>
     </div>
-</div>
-    <h3 class="section-toggle">Operation:</h3>
-						<div class="toggled-section">
+    
+    
+ 
+ 	<!-- HVT section -->
+ 	<label style="width:200px">9 Positions</label>
+ 	<div title="HVT" onClick="disclose('asmt_hvt');">
+		<img id="asmt_hvtImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="asmt_hvtImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</br>
+	
+ 	<table class='hvt' id='asmt_hvt' style="display:none;">
+	 	<tbody>
+		 	<tr>
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'tr',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_tr',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectTr', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectTr', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectTr', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectTr', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectTr', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectTr', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectTr">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectTr">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectTr">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        </br>
+
+					<select id="horValueSelectTr" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectTr" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectTr" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'tm',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_tm',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectTm', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectTm', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectTm', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectTm', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectTm', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectTm', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectTm">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectTm">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectTm">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        </br>
+
+					<select id="horValueSelectTm" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectTm" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectTm" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'tl',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_tl',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectTl', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectTl', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectTl', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectTl', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectTl', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectTl', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectTl">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectTl">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectTl">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        
+			        </br>
+
+					<select id="horValueSelectTl" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectTl" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectTl" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+
+		 	</tr>
+
+		 	<tr>
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'mr',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_mr',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectMr', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectMr', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectMr', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectMr', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectMr', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectMr', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectMr">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectMr">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectMr">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        </br>
+
+					<select id="horValueSelectMr" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectMr" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectMr" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'mm',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_mm',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectMm', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectMm', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectMm', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectMm', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectMm', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectMm', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectMm">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectMm">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectMm">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        </br>
+
+					<select id="horValueSelectMm" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectMm" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectMm" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'ml',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_ml',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectMl', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectMl', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectMl', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectMl', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectMl', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectMl', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectMl">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectMl">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectMl">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        
+			        </br>
+
+					<select id="horValueSelectMl" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectMl" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectMl" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+
+		 	</tr>
+
+		 	<tr>
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'br',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_br',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectBr', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectBr', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectBr', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectBr', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectBr', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectBr', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectBr">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectBr">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectBr">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        </br>
+
+					<select id="horValueSelectBr" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectBr" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectBr" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'bm',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_bm',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectBm', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectBm', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectBm', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectBm', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectBm', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectBm', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectBm">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectBm">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectBm">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        </br>
+
+					<select id="horValueSelectBm" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectBm" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectBm" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+		 		<td>
+					<?php
+						$this->widget('application.modules.eyedraw.OEEyeDrawWidget', array(
+							'mode'=>'edit',
+							'toolbar' => false,
+							'width'=>220,
+							'height'=>220,
+							'idSuffix'=> 'bl',
+							'model'=>$model,
+							'attribute'=>'asmt_hvt_bl',
+							'listenerArray' => array('hvtListener'),
+							'onReadyCommandArray'=>array(
+								array('addDoodle', array('HVTGrid')),
+								array(
+									'addDoodle', 
+									array(
+										'HVT', 
+										array('originX'=>-250, 'rotation'=>M_PI/4), 
+										array(
+											'hor'=>array('id'=>'horSelectBl', 'attribute'=>'value'),
+											'ver'=>array('id'=>'verSelectBl', 'attribute'=>'value'),
+											'tor'=>array('id'=>'torSelectBl', 'attribute'=>'value'),
+											'horValue'=>array('id'=>'horValueSelectBl', 'attribute'=>'value'),
+											'verValue'=>array('id'=>'verValueSelectBl', 'attribute'=>'value'),
+											'torValue'=>array('id'=>'torValueSelectBl', 'attribute'=>'value'),
+										)
+									)
+								),
+								array('addDoodle', array('HVT', array('rotation'=>M_PI/4))),
+								array('deselectDoodles'),
+							),
+						));
+					?>
+					</br>
+					<select id="horSelectBl">
+			            <option value="XT">XT</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="ET">ET</option>
+			        </select>
+			
+			        <select id="verSelectBl">
+			            <option value="R/L">R/L</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="L/R">L/R</option>
+			        </select>
+			            
+			        <select id="torSelectBl">
+			            <option value="Excyclotorsion">Excyclotorsion</option>
+			            <option value="None" selected="true" >None</option>
+			            <option value="Incyclotorsion">Incyclotorsion</option>
+			        </select>
+			        
+			        </br>
+
+					<select id="horValueSelectBl" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+					
+					<select id="verValueSelectBl" style="width:59px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+						<option value=21>21</option>
+						<option value=22>22</option>
+						<option value=23>23</option>
+						<option value=24>24</option>
+						<option value=25>25</option>
+						<option value=26>26</option>
+						<option value=27>27</option>
+						<option value=28>28</option>
+						<option value=29>29</option>
+						<option value=30>30</option>
+						<option value=31>31</option>
+						<option value=32>32</option>
+						<option value=33>33</option>
+						<option value=34>34</option>
+						<option value=35>35</option>
+						<option value=36>36</option>
+						<option value=37>37</option>
+						<option value=38>38</option>
+						<option value=39>39</option>
+						<option value=40>40</option>
+						<option value=41>41</option>
+						<option value=42>42</option>
+						<option value=43>43</option>
+						<option value=44>44</option>
+						<option value=45>45</option>
+						<option value=46>46</option>
+						<option value=47>47</option>
+						<option value=48>48</option>
+						<option value=49>49</option>
+						<option value=50>50</option>
+					</select>
+			
+					<select id="torValueSelectBl" style="width:109px;">
+						<option value=0>0</option>
+						<option value=1>1</option>
+						<option value=2>2</option>
+						<option value=3>3</option>
+						<option value=4>4</option>
+						<option value=5>5</option>
+						<option value=6>6</option>
+						<option value=7>7</option>
+						<option value=8>8</option>
+						<option value=9>9</option>
+						<option value=10>10</option>
+						<option value=11>11</option>
+						<option value=12>12</option>
+						<option value=13>13</option>
+						<option value=14>14</option>
+						<option value=15>15</option>
+						<option value=16>16</option>
+						<option value=17>17</option>
+						<option value=18>18</option>
+						<option value=19>19</option>
+						<option value=20>20</option>
+					</select>
+		 		</td>
+
+		 	</tr>
+
+	 	</tbody>
+ 	</table>
+
+
+	<div class="twocolumndiv">
+        <div class="leftcolumn">     
+        </div>
+        <div class="rightcolumn">
+        </div>
+    </div>
+    
+    </span>
+ 
+
+	<table><tr><td width="80%">    
+    <h3>Operation:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('op_note');">
+		<img id="op_noteImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="op_noteImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+	
+ 	<span id='op_note' style="display:none;">
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         
@@ -407,6 +2249,12 @@
                     )); ?>
                 <?php echo $form->error($model,'op_date'); ?>
             </div>
+            
+        	<div class="row">
+				<?php echo $form->labelEx($model,'op_anaeshetic'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'op_anaeshetic', array()); ?>
+				<?php echo $form->error($model,'op_anaeshetic'); ?>
+			</div>
             
         	<div class="row">
 				<?php echo $form->labelEx($model,'op_measurement_point'); ?>
@@ -495,12 +2343,18 @@
 					<tr>
 						<td>RIO</td>
 						<td>
-							<?php echo ZHtml::enumDropDownList($model,'op_rio_surgery', array('style'=>'width:150px')); ?>
+							<?php echo ZHtml::enumDropDownList($model,'op_rio_surgery', array('style'=>'width:150px','onChange'=>'obliqueChange(this, "right_recession", "right_transposition");')); ?>
 						</td>
 						<td>
 							 <?php echo $form->textField($model,'op_rio_amount',array('style'=>'width:30px')); ?>
 						</td>
 						<td>
+							<span id="right_recession" style="display:none;">
+								<?php echo ZHtml::enumDropDownList($model,'op_rio_position', array('style'=>'width:60px')); ?>
+							</span>
+							<span id="right_transposition" style="display:none;">
+								<?php echo ZHtml::enumDropDownList($model,'op_rio_transposition', array('style'=>'width:60px')); ?>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -518,7 +2372,6 @@
         	</table>
 
         	<!-- Right operation diagram -->
-
 					           
         </div>
         
@@ -583,12 +2436,18 @@
 					<tr>
 						<td>LIO</td>
 						<td>
-							<?php echo ZHtml::enumDropDownList($model,'op_lio_surgery', array('style'=>'width:150px')); ?>
+							<?php echo ZHtml::enumDropDownList($model,'op_lio_surgery', array('style'=>'width:150px','onChange'=>'obliqueChange(this, "left_recession", "left_transposition");')); ?>
 						</td>
 						<td>
 							 <?php echo $form->textField($model,'op_lio_amount',array('style'=>'width:30px')); ?>
 						</td>
 						<td>
+							<span id="left_recession" style="display:none;">
+								<?php echo ZHtml::enumDropDownList($model,'op_lio_position', array('style'=>'width:60px')); ?>
+							</span>
+							<span id="left_transposition" style="display:none;">
+								<?php echo ZHtml::enumDropDownList($model,'op_lio_transposition', array('style'=>'width:60px')); ?>
+							</span>
 						</td>
 					</tr>
 					<tr>
@@ -613,14 +2472,14 @@
     <div class="twocolumndiv">
         <div class="leftcolumn">
         
-        <div id="opCompSection" style="display:block; text-align:right; width: 240px;">
-			
-        <div class="row">
+        <div class="row" style="text-align:right; width: 170px;">        
             <?php echo $form->labelEx($model,'op_comp_none'); ?>
             <?php echo $form->checkBox($model,'op_comp_none', array('class'=>'checkBox', 'onChange'=>'compChange(this, "opCompSection");')); ?>
 			<?php echo $form->error($model,'op_comp_none'); ?>
 		</div>
 
+        <div id="opCompSection" style="display:block; text-align:right; width: 240px;">
+			
 	        <div class="row">        
 	            <?php echo $form->labelEx($model,'op_comp_wrong_side'); ?>
 	            <?php echo $form->checkBox($model,'op_comp_wrong_side', array('class'=>'checkBox')); ?>
@@ -673,9 +2532,18 @@
         </div>
 
     </div>
-</div>
-    <h3 class="section-toggle">Early post-operative assessment:</h3>
-    <div class="toggled-section">
+ 	</span>
+    
+	<table><tr><td width="80%">
+    <h3>Early post-operative assessment:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('early');">
+		<img id="earlyImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="earlyImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+	
+ 	<span id='early' style="display:none;">
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         	<div class="row">
@@ -707,98 +2575,106 @@
         </div>
     </div> 
     
-    <div class="twocolumndiv" style="border-bottom: none;">
-        <div class="leftcolumn">
-        
-            <div class="row">
-        		<label style="margin-right:235px;">Right eye:</label><br/>
-        	</div>
-            <div class="eye">
-	        	<div class="row">
-	        		<label>BCVA Letters</label>
-	        		<?php echo $form->textField($model,'early_bcva_let_right',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'early_bcva_let_right'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>BCVA Kay pictures</label>
-	        		<?php echo $form->textField($model,'early_bcva_kay_right',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'early_bcva_kay_right'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>Fixation</label>
-	        		<?php echo ZHtml::enumDropDownList($model,'early_fixation_right', array()); ?>
-			        <?php echo $form->error($model,'early_fixation_right'); ?>
-	        	</div>
-            </div>
-
-        </div>
-        
-        <div class="rightcolumn">     
-
-        	<div class="row">
-        		<label style="margin-right:235px;">Left eye:</label><br/>
-        	</div>
-        	<div class="eye">
-	        	<div class="row">
-	        		<label>BCVA Letters</label>
-	        		<?php echo $form->textField($model,'early_bcva_let_left',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'early_bcva_let_left'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>BCVA Kay pictures</label>
-	        		<?php echo $form->textField($model,'early_bcva_kay_left',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'early_bcva_kay_left'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>Fixation</label>
-	        		<?php echo ZHtml::enumDropDownList($model,'early_fixation_left', array()); ?>
-			        <?php echo $form->error($model,'early_fixation_left'); ?>
-	        	</div>
-        	</div>
-        	
-        </div>
-    </div>
-    
   	<div class="twocolumndiv">
         <div class="leftcolumn">
         
-	        <div class="row">        
-	        	<!-- Cover test near -->
-	            <?php echo $form->labelEx($model,'early_cover_near'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'early_cover_near', array()); ?>
-				<?php echo $form->error($model,'early_cover_near'); ?>
-			</div>       
+        	<div class="row">
+				<?php echo $form->labelEx($model,'early_cover_hor_near'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'early_cover_hor_near', array()); ?>
+				<?php echo $form->error($model,'early_cover_hor_near'); ?>
+			</div>
 
-	        <div class="row">        
-	        	<!-- Near angle -->
+		   	<div class="row">
 	            <?php echo $form->labelEx($model,'early_angle_near'); ?>
 			    <?php echo $form->textField($model,'early_angle_near'); ?>
 				<?php echo $form->error($model,'early_angle_near'); ?>
+		   	</div>
+		   				
+		   	<div class="row">
+            	<?php echo $form->labelEx($model,'early_cover_vert_near'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'early_cover_vert_near', array()); ?>
+				<?php echo $form->error($model,'early_cover_vert_near'); ?>
+		   	</div>
+
+		   	<div class="row">
+				<?php echo $form->labelEx($model,'early_ver_angle_near'); ?>
+			    <?php echo $form->textField($model,'early_ver_angle_near'); ?>
+				<?php echo $form->error($model,'early_ver_angle_near'); ?>
+		   	</div>
+		   	
+		   	<div class="row">
+				<?php echo $form->labelEx($model,'early_torsion_sub', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'early_torsion_sub', array('class'=>'checkBox')); ?>
+				<?php echo $form->error($model,'early_torsion_sub'); ?>
 			</div>
 			
-	        <div class="row">        
-	        	<!-- Cover test distance -->
-	            <?php echo $form->labelEx($model,'early_cover_dist'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'early_cover_dist', array()); ?>
-				<?php echo $form->error($model,'early_cover_dist'); ?>
+			<div class="row">
+				<?php echo $form->labelEx($model,'early_torsion', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'early_torsion', array('class'=>'checkBox', 'onChange'=>'ahpChange(this,"earlyTorSection");')); ?>
+				<?php echo $form->error($model,'early_torsion'); ?>
 			</div>
 			
-	        <div class="row">        
-	        	<!-- Distance angle -->
-	            <?php echo $form->labelEx($model,'early_angle_dist'); ?>
-			    <?php echo $form->textField($model,'early_angle_dist'); ?>
-				<?php echo $form->error($model,'early_angle_dist'); ?>
-			</div>
+			<div class="onecolumndivindented" id="earlyTorSection" style="display:none;">
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'early_torsion_side'); ?>
+					<?php echo ZHtml::enumDropDownList($model,'early_torsion_side', array()); ?>
+					<?php echo $form->error($model,'early_torsion_side'); ?>
+				</div>
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'early_torsion_clock'); ?>
+					<?php echo ZHtml::enumDropDownList($model,'early_torsion_clock', array()); ?>
+					<?php echo $form->error($model,'early_torsion_clock'); ?>
+				</div>
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'early_torsion_amt'); ?>
+				    <?php echo $form->textField($model,'early_torsion_amt',array('style'=>'width:40px')); ?>
+					<?php echo $form->error($model,'early_torsion_amt'); ?>
+				</div>
+	        </div>
 		
         </div>
-        
         <div class="rightcolumn">
-        </div>
-    </div>
-						</div>      
+		
+        	<div class="row">
+				<?php echo $form->labelEx($model,'early_cover_hor_dist'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'early_cover_hor_dist', array()); ?>
+				<?php echo $form->error($model,'early_cover_hor_dist'); ?>
+			</div>
 
-    <h3 class="section-toggle">Late post-operative assessment:</h3>
-						<div class="toggled-section">
+		   	<div class="row">
+	            <?php echo $form->labelEx($model,'early_hor_angle_dist'); ?>
+			    <?php echo $form->textField($model,'early_hor_angle_dist'); ?>
+				<?php echo $form->error($model,'early_hor_angle_dist'); ?>
+		   	</div>
+		   				
+		   	<div class="row">
+            	<?php echo $form->labelEx($model,'early_cover_vert_dist'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'early_cover_vert_dist', array()); ?>
+				<?php echo $form->error($model,'early_cover_vert_dist'); ?>
+		   	</div>
+
+		   	<div class="row">
+				<?php echo $form->labelEx($model,'early_ver_angle_dist'); ?>
+			    <?php echo $form->textField($model,'early_ver_angle_dist'); ?>
+				<?php echo $form->error($model,'early_ver_angle_dist'); ?>
+		   	</div>
+	          
+        </div>
+		                
+	</div>
+ 	</span>             
+
+	<table><tr><td width="80%">
+    <h3>Late post-operative assessment:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('late');">
+		<img id="lateImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="lateImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+	
+ 	<span id='late' style="display:none;">
+ 	
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         	<div class="row">
@@ -817,113 +2693,82 @@
                                      ),
                     )); ?>
                 <?php echo $form->error($model,'late_date'); ?>
-            </div>        
-    	</div>
-    	
-        <div class="rightcolumn">
-        	<!-- Notes -->        
-	        <div class="row">
-	            <?php echo $form->labelEx($model,'late_notes', array('style'=>'width:50px')); ?>
-	            <?php echo $form->textArea($model, 'late_notes', array('rows'=>3, 'cols'=>30, 'style'=>'position:absolute;')); ?>
-	            <?php echo $form->error($model,'late_notes'); ?>
-	        </div>
-        </div>
-    </div> 
-    <div class="twocolumndiv" style="border-bottom: none;">
-        <div class="leftcolumn">
-        
-            <div class="row">
-        		<label style="margin-right:235px;">Right eye:</label><br/>
-        	</div>
-            <div class="eye">
-	        	<div class="row">
-	        		<label>BCVA Letters</label>
-	        		<?php echo $form->textField($model,'late_bcva_let_right',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'late_bcva_let_right'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>BCVA Kay pictures</label>
-	        		<?php echo $form->textField($model,'late_bcva_kay_right',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'late_bcva_kay_right'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>Fixation</label>
-	        		<?php echo ZHtml::enumDropDownList($model,'late_fixation_right', array()); ?>
-			        <?php echo $form->error($model,'late_fixation_right'); ?>
-	        	</div>
             </div>
-
+			
         </div>
-        
-        <div class="rightcolumn">     
 
-        	<div class="row">
-        		<label style="margin-right:235px;">Left eye:</label><br/>
-        	</div>
-        	<div class="eye">
-	        	<div class="row">
-	        		<label>BCVA Letters</label>
-	        		<?php echo $form->textField($model,'late_bcva_let_left',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'late_bcva_let_left'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>BCVA Kay pictures</label>
-	        		<?php echo $form->textField($model,'late_bcva_kay_left',array('style'=>'width:40px')); ?>
-			        <?php echo $form->error($model,'late_bcva_kay_left'); ?>
-	        	</div>
-	        	<div class="row">
-	        		<label>Fixation</label>
-	        		<?php echo ZHtml::enumDropDownList($model,'late_fixation_left', array()); ?>
-			        <?php echo $form->error($model,'late_fixation_left'); ?>
-	        	</div>
-        	</div>
-        	
+        
+        <div class="rightcolumn">      
+
+
+			
+
+                        
         </div>
     </div>
+
 
   	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         
-	        <div class="row">        
-	        	<!-- Cover test near -->
-	            <?php echo $form->labelEx($model,'late_cover_near'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'late_cover_near', array()); ?>
-				<?php echo $form->error($model,'late_cover_near'); ?>
-			</div>       
+        	<div class="row">
+				<?php echo $form->labelEx($model,'late_cover_hor_near'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'late_cover_hor_near', array()); ?>
+				<?php echo $form->error($model,'late_cover_hor_near'); ?>
+			</div>
 
-	        <div class="row">        
-	        	<!-- Near angle -->
+		   	<div class="row">
 	            <?php echo $form->labelEx($model,'late_angle_near'); ?>
 			    <?php echo $form->textField($model,'late_angle_near'); ?>
 				<?php echo $form->error($model,'late_angle_near'); ?>
-			</div>
-			
-	        <div class="row">        
-	        	<!-- Cover test distance -->
-	            <?php echo $form->labelEx($model,'late_cover_dist'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'late_cover_dist', array()); ?>
-				<?php echo $form->error($model,'late_cover_dist'); ?>
-			</div>
-			
-	        <div class="row">        
-	        	<!-- Distance angle -->
-	            <?php echo $form->labelEx($model,'late_angle_dist'); ?>
-			    <?php echo $form->textField($model,'late_angle_dist'); ?>
-				<?php echo $form->error($model,'late_angle_dist'); ?>
-			</div>
-			
-	        <div class="row">        
-	        	<!-- Pattern -->
-	            <?php echo $form->labelEx($model,'late_pattern'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'late_pattern', array()); ?>
-				<?php echo $form->error($model,'late_pattern'); ?>
-			</div>
+		   	</div>
+		   				
+		   	<div class="row">
+            	<?php echo $form->labelEx($model,'late_cover_vert_near'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'late_cover_vert_near', array()); ?>
+				<?php echo $form->error($model,'late_cover_vert_near'); ?>
+		   	</div>
+
+		   	<div class="row">
+				<?php echo $form->labelEx($model,'late_ver_angle_near'); ?>
+			    <?php echo $form->textField($model,'late_ver_angle_near'); ?>
+				<?php echo $form->error($model,'late_ver_angle_near'); ?>
+		   	</div>
 		
         </div>
-        
         <div class="rightcolumn">
-        
-			<!-- Abnormal head posture -->
+		
+        	<div class="row">
+				<?php echo $form->labelEx($model,'late_cover_hor_dist'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'late_cover_hor_dist', array()); ?>
+				<?php echo $form->error($model,'late_cover_hor_dist'); ?>
+			</div>
+
+		   	<div class="row">
+	            <?php echo $form->labelEx($model,'late_hor_angle_dist'); ?>
+			    <?php echo $form->textField($model,'late_hor_angle_dist'); ?>
+				<?php echo $form->error($model,'late_hor_angle_dist'); ?>
+		   	</div>
+		   				
+		   	<div class="row">
+            	<?php echo $form->labelEx($model,'late_cover_vert_dist'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'late_cover_vert_dist', array()); ?>
+				<?php echo $form->error($model,'late_cover_vert_dist'); ?>
+		   	</div>
+
+		   	<div class="row">
+				<?php echo $form->labelEx($model,'late_ver_angle_dist'); ?>
+			    <?php echo $form->textField($model,'late_ver_angle_dist'); ?>
+				<?php echo $form->error($model,'late_ver_angle_dist'); ?>
+		   	</div>
+	          
+        </div>
+		                
+	</div>
+
+	<div class="twocolumndiv" style="border-bottom: none;">
+    	<div class="leftcolumn">
+    		<!-- Abnormal head posture -->
 		   	<div class="row">
 	            <?php echo $form->labelEx($model,'late_ahp_present', array('style'=>'width:170px')); ?>
 	            <?php echo $form->checkBox($model,'late_ahp_present', array('class'=>'checkBox', 'onChange'=>'ahpChange(this,"lateAhpSection");')); ?>
@@ -944,18 +2789,74 @@
 					<?php echo $form->error($model,'late_ahp_angle'); ?>
 				</div>
 	        </div>
-	        
-	        <div class="row">        
-	        	<!-- Diplopia -->
-	            <?php echo $form->labelEx($model,'late_diplopia', array('style'=>'width:170px')); ?>
-	            <?php echo $form->checkBox($model,'late_diplopia', array('class'=>'checkBox')); ?>
+        </div>
+        <div class="rightcolumn">
+    		<div class="row">
+            	<?php echo $form->labelEx($model,'late_pattern'); ?>
+				<?php echo ZHtml::enumDropDownList($model,'late_pattern', array()); ?>
+				<?php echo $form->error($model,'late_pattern'); ?>
+		   	</div>
+        </div>
+    </div>
+
+	<div class="twocolumndiv"  style="border-bottom: none;">
+    	<div class="leftcolumn">
+    	
+			<div class="row">
+				<?php echo $form->labelEx($model,'late_binoc_with_cor', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'late_binoc_with_cor', array('class'=>'checkBox')); ?>
+				<?php echo $form->error($model,'late_binoc_with_cor'); ?>
+			</div>
+		
+			<div class="row">
+				<?php echo $form->labelEx($model,'late_binoc_without_cor', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'late_binoc_without_cor', array('class'=>'checkBox')); ?>
+				<?php echo $form->error($model,'late_binoc_without_cor'); ?>
+			</div>
+		
+		   	<div class="row">
+				<?php echo $form->labelEx($model,'late_torsion_sub', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'late_torsion_sub', array('class'=>'checkBox')); ?>
+				<?php echo $form->error($model,'late_torsion_sub'); ?>
+			</div>
+			
+			<div class="row">
+				<?php echo $form->labelEx($model,'late_torsion', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'late_torsion', array('class'=>'checkBox', 'onChange'=>'ahpChange(this,"lateTorSection");')); ?>
+				<?php echo $form->error($model,'late_torsion'); ?>
+			</div>
+			
+			<div class="onecolumndivindented" id="lateTorSection" style="display:none;">
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'late_torsion_side'); ?>
+					<?php echo ZHtml::enumDropDownList($model,'late_torsion_side', array()); ?>
+					<?php echo $form->error($model,'late_torsion_side'); ?>
+				</div>
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'late_torsion_clock'); ?>
+					<?php echo ZHtml::enumDropDownList($model,'late_torsion_clock', array()); ?>
+					<?php echo $form->error($model,'late_torsion_clock'); ?>
+				</div>
+		        <div class="row">        
+		            <?php echo $form->labelEx($model,'late_torsion_amt'); ?>
+				    <?php echo $form->textField($model,'late_torsion_amt',array('style'=>'width:40px')); ?>
+					<?php echo $form->error($model,'late_torsion_amt'); ?>
+				</div>
+	        </div>
+		
+			<div class="row">
+				<?php echo $form->labelEx($model,'late_diplopia', array('style'=>'width:200px')); ?>
+				<?php echo $form->checkBox($model,'late_diplopia', array('class'=>'checkBox')); ?>
 				<?php echo $form->error($model,'late_diplopia'); ?>
 			</div>
-					
+
+ 	
+        </div>
+        <div class="rightcolumn">
 			<!-- Stereo acuity -->
 		   	<div class="row">
 	            <?php echo $form->labelEx($model,'late_stereo_present', array('style'=>'width:170px')); ?>
-	            <?php echo $form->checkBox($model,'late_stereo_present', array('class'=>'checkBox', 'onChange'=>'stereoChange(this, "lateStereoSection");')); ?>
+	            <?php echo $form->checkBox($model,'late_stereo_present', array('class'=>'checkBox', 'onChange'=>'stereoChange(this,"lateStereoSection");')); ?>
 	            <?php echo $form->error($model,'late_stereo_present'); ?>
 	        </div>
 	        
@@ -979,60 +2880,21 @@
 					<?php echo $form->error($model,'late_stereo_lang'); ?>
 				</div>
 	        </div>
-	        
-	        <!-- Late Newcastle section -->
-        	<div class="row" id="lateNewcastleSectionLabel" style="display:none;">   
-	        	<label style='width:170px; margin-right:185px;'>Intermittant Exotropia only:</label><br/>
-        	</div>
-        	
-	        <div class="onecolumndivindented" id="lateNewcastleSection" style="display:none;">	   
-	
-	        	<div class="row">        
-		            <?php echo $form->labelEx($model,'late_newcastle_home', array('style'=>'width:90px')); ?>
-					<?php echo ZHtml::enumDropDownList($model,'late_newcastle_home', array()); ?>
-					<?php echo $form->error($model,'late_newcastle_home'); ?>
-				</div>
-	        	
-		        <div class="row">        
-		            <?php echo $form->labelEx($model,'late_newcastle_near', array('style'=>'width:90px')); ?>
-					<?php echo ZHtml::enumDropDownList($model,'late_newcastle_near', array()); ?>
-					<?php echo $form->error($model,'late_newcastle_near'); ?>
-				</div>
-		
-		        <div class="row">        
-		            <?php echo $form->labelEx($model,'late_newcastle_distance', array('style'=>'width:90px')); ?>
-					<?php echo ZHtml::enumDropDownList($model,'late_newcastle_distance', array()); ?>
-					<?php echo $form->error($model,'late_newcastle_distance'); ?>
-				</div>
-	
-		        <div class="row">        
-		            <?php echo $form->labelEx($model,'late_IXTQ', array('style'=>'width:90px')); ?>
-				    <?php echo $form->textField($model,'late_IXTQ',array('style'=>'width:40px')); ?>
-					<?php echo $form->error($model,'late_IXTQ'); ?>
-				</div>
-						
-			</div>
-		
-	        <div class="row">        
-	        	<!-- Amblyopia -->
-	            <?php echo $form->labelEx($model,'late_amblyopia'); ?>
-				<?php echo ZHtml::enumDropDownList($model,'late_amblyopia', array()); ?>
-				<?php echo $form->error($model,'late_amblyopia'); ?>
-			</div>
+   
         </div>
     </div>
 
 	<div class="twocolumndiv" style="border-bottom: none;">
         <div class="leftcolumn">
         
-		
-	        <div id="lateCompSection" style="display:block; text-align:right; width: 240px;">
-	        <div class="row">        
+	        <div class="row" style="text-align:right; width: 170px;">        
 	        	<!-- Complications -->
 	            <?php echo $form->labelEx($model,'late_comp_none'); ?>
 	            <?php echo $form->checkBox($model,'late_comp_none', array('class'=>'checkBox', 'onChange'=>'compChange(this, "lateCompSection");')); ?>
 				<?php echo $form->error($model,'late_comp_none'); ?>
 			</div>
+		
+	        <div id="lateCompSection" style="display:block; text-align:right; width: 240px;">
 		        <div class="row">        
 		            <?php echo $form->labelEx($model,'late_comp_slipped_muscle'); ?>
 		            <?php echo $form->checkBox($model,'late_comp_slipped_muscle', array('class'=>'checkBox')); ?>
@@ -1103,15 +2965,15 @@
 	        </div>
         </div>
     </div> 
-</div>
-        
+ 	</span>
+
 	<div class="twocolumndiv">
         <div class="leftcolumn">
     	</div>
         <div class="rightcolumn">
         </div>
     </div>  
-           
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>
@@ -1122,5 +2984,5 @@
 
 <!-- Calls javascript to initialise page -->
 <?php
-    Yii::app()->clientScript->registerScript('initScript',"formInit();",CClientScript::POS_LOAD);
+    Yii::app()->clientScript->registerScript('initScript',"adultFormInit();",CClientScript::POS_LOAD);
 ?>
