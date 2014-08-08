@@ -25,8 +25,16 @@
         <div class="rightcolumn">
         </div>
     </div>
-
+	<table><tr><td width="80%">
     <h3>Demographics:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('demographics');">
+		<img id="surg_planImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="surg_planImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+
+ 	<span id='demographics' style="display:none;">
     <div class="twocolumndiv">
         <div class="leftcolumn">
 
@@ -59,8 +67,17 @@
 			
         </div>
     </div>
-    
+    </span>
+	<table><tr><td width="80%">
     <h3>Classification:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('classification');">
+		<img id="surg_planImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="surg_planImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+
+ 	<span id='classification' style="display:none;">
     <div class="twocolumndiv">
         <div class="leftcolumn">
 
@@ -81,8 +98,17 @@
 			
         </div>
     </div>
-
+    </span>
+	<table><tr><td width="80%">
     <h3>Co-factors:</h3>
+	</td><td width="20%">
+    <div onClick="disclose('co_factors');">
+		<img id="surg_planImgOpen" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseOpen16.gif" align="abstop" style="display:none;">
+		<img id="surg_planImgClose" src="<?php echo Yii::app()->request->baseUrl; ?>/graphics/discloseClose16.gif" align="abstop" style="display:block;">
+	</div>
+	</td></tr></table>
+
+ 	<span id='co_factors' style="display:none;">
     <div class="twocolumndiv">
         <div class="leftcolumn">
 
@@ -139,7 +165,7 @@
 			</div>						
         </div>
     </div>
-
+    </span>
 	<table><tr><td width="80%">
     <h3>Surgical Planning:</h3>
 	</td><td width="20%">
