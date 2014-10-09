@@ -3,7 +3,7 @@
 my $dbi_driver = "DBI:mysql";
 my $dbi_db = "strabismus";
 my $dbi_user = "root";
-my $dbi_pass = "";
+my $dbi_pass = "pikachu";
 
 use DBI;
 use Data::Dumper 'Dumper';

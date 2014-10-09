@@ -68,11 +68,11 @@ function formInit()
 function adultFormInit()
 {
 	// Get value of category
-	var categoryDropDown = document.getElementById('Dataset_asmt_category');
+	var categoryDropDown = document.getElementById('AdultDataset_asmt_category');
 	if (categoryDropDown) {
 		var dropDownId = (categoryDropDown.value == 'esotropia')?'esoDropDown':'exoDropDown';
 	
-		var typeValue = document.getElementById('Dataset_asmt_type').value;
+		var typeValue = document.getElementById('AdultDataset_asmt_type').value;
 		if (typeValue)
 		{
 			document.getElementById(dropDownId).value = typeValue;
@@ -122,58 +122,22 @@ function categoryChange(_obj)
 		var typeDropDown = document.getElementById('typeDropDown');
 		emptyList(typeDropDown);
 		fillList(typeDropDown, typeList[_obj.value]);
-		adultTypeChange(typeDropDown.value);
+		typeChange(typeDropDown.value);
 	}
 }
 
 // Called by change in strabismus type dropdown
 function typeChange(_value)
 {
-	document.getElementById('Dataset_asmt_type').value = _value;
+	document.getElementById('AdultDataset_asmt_type').value = _value;
 	console.log(_value);
-	
-	// Newcastle section only appears for intermittent exotropias only
-	if (_value == 'intermittent distance exotropia')
-	{
-		document.getElementById('newcastleSection').style.display = "block";
-		document.getElementById('newcastleSectionLabel').style.display = "block";
-		document.getElementById('lateNewcastleSection').style.display = "block";
-		document.getElementById('lateNewcastleSectionLabel').style.display = "block";
-	}
-	else
-	{
-		document.getElementById('newcastleSection').style.display = "none";
-		document.getElementById('newcastleSectionLabel').style.display = "none";
-		document.getElementById('lateNewcastleSection').style.display = "none";
-		document.getElementById('lateNewcastleSectionLabel').style.display = "none";
-	}
-}
 
-// Called by change in strabismus type dropdown
-function adultTypeChange(_value)
-{
-/*
-	document.getElementById('Dataset_asmt_type').value = _value;
-	console.log(_value);
-*/
-	
 	// Newcastle section only appears for intermittent exotropias only
-/*
-	if (_value == 'intermittent distance exotropia')
-	{
-		document.getElementById('newcastleSection').style.display = "block";
-		document.getElementById('newcastleSectionLabel').style.display = "block";
-		document.getElementById('lateNewcastleSection').style.display = "block";
-		document.getElementById('lateNewcastleSectionLabel').style.display = "block";
+	var ks = ['newcastleSection', 'newcastleSectionLabel', 'lateNewcastleSection', 'lateNewcastleSectionLabel'];
+	var val = ((_value == 'intermittent distance exotropia') ? "block" : "none");
+	for (var i=0; i < ks.length; i++) {
+		document.getElementById(ks[i]).style.display = val;
 	}
-	else
-	{
-		document.getElementById('newcastleSection').style.display = "none";
-		document.getElementById('newcastleSectionLabel').style.display = "none";
-		document.getElementById('lateNewcastleSection').style.display = "none";
-		document.getElementById('lateNewcastleSectionLabel').style.display = "none";
-	}
-*/
 }
 
 // Called by change in type of oblique surgery
@@ -192,167 +156,6 @@ function obliqueChange(_element, _posId, _transId)
 	if (_element.value == 'anterior transposition') transDropDown.style.display = "block";
 }
 
-/*
-function eDparameterListener(_drawing)
-{
-	// Get pointer to trial lens doodle
-	var doodle = _drawing.firstDoodleOfClass('TrialLens');
-
-	// Refraction drawings
-	if (_drawing.IDSuffix == "RRF")
-	{
-		document.getElementById('Dataset_asmt_axis_right').value = doodle.getParameter('axis');
-	}
-	if (_drawing.IDSuffix == "LRF")
-	{
-		document.getElementById('Dataset_asmt_axis_left').value = doodle.getParameter('axis');
-	}
-	
-	// Surgical drawings
-	if (_drawing.IDSuffix == "RSS")
-	{
-		var doodle = _drawing.selectedDoodle;
-		if (doodle != null)
-		{
-			// Get value of transposition
-			trans = doodle.getParameter('transposition');
-
-			// Identify rectus by rotation value
-			var rotationValue = Math.floor(100 * doodle.rotation/Math.PI/2);
-			switch (rotationValue)
-			{
-				case 25:					
-					document.getElementById('Dataset_op_rmr_amount').value = doodle.getParameter('recession');
-					el = document.getElementById('Dataset_op_rmr_transposition');
-					if (trans == 0) el.value = 'None';
-					if (trans < 0) el.value = 'Up';
-					if (trans > 0) el.value = 'Down';
-					break;
-				case 50:
-					document.getElementById('Dataset_op_rir_amount').value = doodle.getParameter('recession');
-					break;
-				case -25:
-					document.getElementById('Dataset_op_rlr_amount').value = doodle.getParameter('recession');
-					el = document.getElementById('Dataset_op_rlr_transposition');
-					if (trans == 0) el.value = 'None';
-					if (trans < 0) el.value = 'Down';
-					if (trans > 0) el.value = 'Up';
-					break
-				case 0:
-					document.getElementById('Dataset_op_rsr_amount').value = doodle.getParameter('recession');
-					break;
-			}			
-		}
-	}
-	if (_drawing.IDSuffix == "LSS")
-	{
-		var doodle = _drawing.selectedDoodle;
-		if (doodle != null)
-		{
-			// Get value of transposition
-			trans = doodle.getParameter('transposition');
-			
-			// Identify rectus by rotation value
-			var rotationValue = Math.floor(100 * doodle.rotation/Math.PI/2);
-			switch (rotationValue)
-			{
-				case -25:
-					document.getElementById('Dataset_op_lmr_amount').value = doodle.getParameter('recession');
-					el = document.getElementById('Dataset_op_lmr_transposition');
-					if (trans == 0) el.value = 'None';
-					if (trans < 0) el.value = 'Down';
-					if (trans > 0) el.value = 'Up';
-					break;
-				case 50:
-					document.getElementById('Dataset_op_lir_amount').value = doodle.getParameter('recession');
-					break;
-				case 25:
-					document.getElementById('Dataset_op_llr_amount').value = doodle.getParameter('recession');
-					el = document.getElementById('Dataset_op_llr_transposition');
-					if (trans == 0) el.value = 'None';
-					if (trans < 0) el.value = 'Up';
-					if (trans > 0) el.value = 'Down';
-					break;
-				case 0:
-					document.getElementById('Dataset_op_lsr_amount').value = doodle.getParameter('recession');
-					break;
-			}			
-		}
-	}	
-}
-*/
-
-/**
- * Called by a change in the value of any rectus amount
- */
-/*
-function rectusChange(_element)
-{
-	// Tranpsoition value
-	var tr;
-	
-	if (_element.id == 'Dataset_op_rmr_amount')
-	{
-		rmr.setParameterWithAnimation('recession', _element.value);
-	}
-	if (_element.id == 'Dataset_op_rmr_transposition')
-	{
-		if (_element.value == 'None') tr = 0;
-		if (_element.value == 'Up') tr = -3;
-		if( _element.value == 'Down') tr = 3;
-		rmr.setParameterWithAnimation('transposition', tr);
-	}
-	if (_element.id == 'Dataset_op_rir_amount')
-	{
-		rir.setParameterWithAnimation('recession', _element.value);
-	}
-	if (_element.id == 'Dataset_op_rlr_amount')
-	{
-		rlr.setParameterWithAnimation('recession', _element.value);
-	}
-	if (_element.id == 'Dataset_op_rlr_transposition')
-	{
-		if (_element.value == 'None') tr = 0;
-		if (_element.value == 'Up') tr = 3;
-		if( _element.value == 'Down') tr = -3;
-		rlr.setParameterWithAnimation('transposition', tr);
-	}
-	if (_element.id == 'Dataset_op_rsr_amount')
-	{
-		rsr.setParameterWithAnimation('recession', _element.value);
-	}
-	if (_element.id == 'Dataset_op_lmr_amount')
-	{
-		lmr.setParameterWithAnimation('recession', _element.value);
-	}
-	if (_element.id == 'Dataset_op_lmr_transposition')
-	{
-		if (_element.value == 'None') tr = 0;
-		if (_element.value == 'Up') tr = 3;
-		if( _element.value == 'Down') tr = -3;
-		lmr.setParameterWithAnimation('transposition', tr);
-	}
-	if (_element.id == 'Dataset_op_lir_amount')
-	{
-		lir.setParameterWithAnimation('recession', _element.value);
-	}
-	if (_element.id == 'Dataset_op_llr_amount')
-	{
-		llr.setParameterWithAnimation('recession', _element.value);
-	}
-	if (_element.id == 'Dataset_op_llr_transposition')
-	{
-		if (_element.value == 'None') tr = 0;
-		if (_element.value == 'Up') tr = -3;
-		if( _element.value == 'Down') tr = 3;
-		llr.setParameterWithAnimation('transposition', tr);
-	}
-	if (_element.id == 'Dataset_op_lsr_amount')
-	{
-		lsr.setParameterWithAnimation('recession', _element.value);
-	}
-}
-*/
 
 /**
  * Called by a change in refraction drop downs, populates value of input elements
@@ -371,7 +174,7 @@ function refChange(_element)
 	}
 	
 	// Replace value of input element
-	var elementArray = {r_sph:'Dataset_asmt_sphere_right', r_cyl:'Dataset_asmt_cyl_right', l_sph:'Dataset_asmt_sphere_left', l_cyl:'Dataset_asmt_cyl_left'};
+	var elementArray = {r_sph:'AdultDataset_asmt_sphere_right', r_cyl:'AdultDataset_asmt_cyl_right', l_sph:'AdultDataset_asmt_sphere_left', l_cyl:'Dataset_asmt_cyl_left'};
 	document.getElementById(elementArray[idRoot]).value = value;
 
 }
@@ -382,7 +185,7 @@ function refChange(_element)
  function axisChange(_element)
  {
 	 var axisValue = document.getElementById(_element.id).value;
-	 if (_element.id == 'Dataset_asmt_axis_right')
+	 if (_element.id == 'AdultDataset_asmt_axis_right')
 	 {
 		 window['ed_drawing_edit_RRF'].setParameterForDoodleOfClass('TrialLens', 'axis', axisValue);
 	 }
@@ -440,64 +243,6 @@ function eyeDrawReady(_name)
 	{
 		refInit(_name);
 	}
-	
-/*
-	// Surgery doodles
-	if (_name == 'ed_drawing_edit_RSS')
-	{
-		// Get reference to drawing
-		var drawing = window[_name];
-		
-        rmr = drawing.addDoodle('Rectus');
-        rir = drawing.addDoodle('Rectus');
-        rlr = drawing.addDoodle('Rectus');
-        rsr = drawing.addDoodle('Rectus');
-
-        rir.rotation = Math.PI;
-        rsr.rotation = 0;
-        rmr.rotation = Math.PI/2;
-        rlr.rotation = -Math.PI/2;
-
-        
-        // Set initial values
-        rmr.setParameterWithAnimation('recession', document.getElementById('Dataset_op_rmr_amount').value);
-        rir.setParameterWithAnimation('recession', document.getElementById('Dataset_op_rir_amount').value);
-        rlr.setParameterWithAnimation('recession', document.getElementById('Dataset_op_rlr_amount').value);
-        rsr.setParameterWithAnimation('recession', document.getElementById('Dataset_op_rsr_amount').value);
-                 
-        // Draw doodles
-        drawing.deselectDoodles();
-        drawing.repaint();		
-	}
-	if (_name == 'ed_drawing_edit_LSS')
-	{
-		// Get reference to drawing
-		var drawing = window[_name];
-		
-        lmr = drawing.addDoodle('Rectus');
-        lir = drawing.addDoodle('Rectus');
-        llr = drawing.addDoodle('Rectus');
-        lsr = drawing.addDoodle('Rectus');
-
-        lir.rotation = Math.PI;
-        lsr.rotation = 0;
-        lmr.rotation = -Math.PI/2;
-        llr.rotation = Math.PI/2;                        
-
-        
-        // Set initial values
-        lmr.setParameterWithAnimation('recession', document.getElementById('Dataset_op_lmr_amount').value);
-        lir.setParameterWithAnimation('recession', document.getElementById('Dataset_op_lir_amount').value);
-        llr.setParameterWithAnimation('recession', document.getElementById('Dataset_op_llr_amount').value);
-        lsr.setParameterWithAnimation('recession', document.getElementById('Dataset_op_lsr_amount').value);
-                 
-        // Draw doodles
-        drawing.deselectDoodles();
-        drawing.repaint();		
-	}
-*/
-
-	
 }
 
 /**
@@ -558,151 +303,44 @@ function deleteGoal(obj)
     document.getElementById('goalTable').deleteRow(rowIndex);
 }
 
-/**
- * Function called by add comp drop down
- */
-function addComp()
-{
-    // Get index of selected goal
-    var select = document.getElementById('compSelect');
-    var selectedIndex = select.selectedIndex;
-    var selectedType = select.options[selectedIndex].text;
-    
-    // Get reference to table
-    var table = document.getElementById('compTable');
-    
-    // Index of next row is equal to number of rows
-    var nextRowIndex = table.tBodies[0].rows.length;
-    
-    // Add new row
-    var newRow = table.tBodies[0].insertRow(nextRowIndex);
-    
-    // Goal
-    var cell0 = newRow.insertCell(0);
-    var textNode = document.createTextNode(selectedType);
-    cell0.setAttribute('width', '80%');
-    cell0.appendChild(textNode);
-        
-    // Create a Delete aref element
-    var cell1 = newRow.insertCell(1);
-    cell1.setAttribute('width', '20%');
-    var deleteButton = document.createElement('a');
-    deleteButton.setAttribute('onClick','deleteComp(this);');
-    deleteButton.innerText = "Delete";
-    cell1.appendChild(deleteButton);
-    
-    // Also add to hidden text input
-    document.getElementById('Dataset_op_comps').value += '|' + selectedType + '|';
-    
-    // Return select to normal
-    select.selectedIndex = 0;
-}
-
-// Delete comp
-function deleteComp(obj)
-{
-    // Get index of row
-    var rowIndex = obj.parentNode.parentNode.sectionRowIndex;
-
-    // Get text contexts of table and add delimiters
-    var deleteString = document.getElementById('compTable').rows[rowIndex].cells[0].firstChild.nodeValue;
-    deleteString = '|' + deleteString +'|';
-    
-    // Get input value and remove string
-    var inputString = document.getElementById('Dataset_op_comps').value;
-    document.getElementById('Dataset_op_comps').value = inputString.replace(deleteString, '');
-  
-    // Delete it from table
-    document.getElementById('compTable').deleteRow(rowIndex);
-}
-
 // AHP change, called by change in asmt_ahp_present checkbox
 function ahpChange(_obj, _id)
 {
-	if (_obj.checked)
-	{
-		document.getElementById(_id).style.display = "block";
-	}
-	else
-	{
-		document.getElementById(_id).style.display = "none";
-	}
+	document.getElementById(_id).style.display = ((_obj.checked) ? "block" : "none");
 }
 
 // Steroeoacuity change, called by change in asmt_stereo_present checkbox
 function stereoChange(_obj, _id)
 {
-	if (_obj.checked)
-	{
-		document.getElementById(_id).style.display = "block";
-	}
-	else
-	{
-		document.getElementById(_id).style.display = "none";
-	}
+	document.getElementById(_id).style.display = ((_obj.checked) ? "block" : "none");
 }
 
 // Amblyopia change
 function amblyopiaChange(value)
 {
-	if(value != 'None')
-	{
-		document.getElementById('amblyopiaSection').style.display = "block";
-	}
-	else
-	{
-		document.getElementById('amblyopiaSection').style.display = "none";
-	}
+    document.getElementById('amblyopiaSection').style.display = ((value != "None") ? "block" : "none");
 }
 
 // Complication change, called by change in op_comp_none checkbox
 function compChange(_obj, _id)
 {
-	if (!_obj.checked)
-	{
-		document.getElementById(_id).style.display = "block";
-	}
-	else
-	{
-		document.getElementById(_id).style.display = "none";
-	}
+	document.getElementById(_id).style.display = ((!_obj.checked) ? "block" : "none");
 }
 
 // Complication change, called by change in op_comp_none checkbox
 function compChange(_obj, _id)
 {
-	if (!_obj.checked)
-	{
-		document.getElementById(_id).style.display = "block";
-	}
-	else
-	{
-		document.getElementById(_id).style.display = "none";
-	}
+	document.getElementById(_id).style.display = ((!_obj.checked) ? "block" : "none");
 }
 
 function lateClinicChange(_obj, _id)
 {
-	if (_obj.checked)
-	{
-		document.getElementById(_id).style.display = "block";
-	}
-	else
-	{
-		document.getElementById(_id).style.display = "none";
-	}
+	document.getElementById(_id).style.display = ((_obj.checked) ? "block" : "none");
 }
 
 function lateTheatreChange(_obj, _id)
 {
-	if (_obj.checked)
-	{
-		document.getElementById(_id).style.display = "block";
-	}
-	else
-	{
-		document.getElementById(_id).style.display = "none";
-	}
+	document.getElementById(_id).style.display = ((_obj.checked) ? "block" : "none");
 }
 
 // This function goes through the options for the given drop down box and removes them in preparation for a new set of values
@@ -890,6 +528,11 @@ function hvtListener(_drawing) {
 	}
 }
 
+function lateHvtListener(a)
+{
+    return hvtListener(a);
+}
+
 // Handles opening and closing of HVT area
 function disclose(_id) {
 	var el = document.getElementById(_id);
@@ -911,6 +554,7 @@ function disclose(_id) {
 }
 
 jQuery(document).ready(function () {
+    // Toggling stuff we don't currently use
     var togglers = jQuery('.section-toggle');
     var toggled = jQuery('.toggled-section');
     console.log(togglers, togglers.length);
@@ -919,7 +563,6 @@ jQuery(document).ready(function () {
 	console.log("An uneven numbers of togglers and toggleables were found.");
 	return;
     }
-    console.log('arse', togglers.length);
     for (var a=0; a < togglers.length; a++) {
 	(function (b) {
 	    jQuery(togglers.get(b)).click(function(i) {
@@ -939,3 +582,6 @@ jQuery(document).ready(function () {
     }
 });
 
+function goToViewPage(id) {
+    console.log($(id).yiiGridView('getSelection'));
+}

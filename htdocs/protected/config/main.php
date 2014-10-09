@@ -57,7 +57,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=strabismus',
 			'emulatePrepare' => true,
 			'username' => 'root',
-			'password' => '',
+			'password' => 'pikachu',
 			'charset' => 'utf8',
 			'tablePrefix' => 'tbl_',
 		),

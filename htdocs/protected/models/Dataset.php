@@ -392,10 +392,4 @@ class Dataset extends CActiveRecord
 	    $returnString = str_replace('||' , ', ' , $this->plan_goals);
 	    return ucfirst(str_replace('|', '', $returnString));
     }
-
-	public function completionScore() {
-		$score = 100;
-		$segments = abs(intval($score/20));
-		return '<span class="completion-score-' . $segments . '">' . $score . '%</span>';
-	}
 }

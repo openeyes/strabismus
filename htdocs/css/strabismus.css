@@ -7,6 +7,26 @@ table.hvt td
 	border: 1px solid black;
 }
 
+#adult-dataset-grid_c0 {
+  width: 30px;
+}
+
+#adult-dataset-grid_c1 {
+  width: 70px;
+}
+
+#adult-dataset-grid_c2 {
+  width: 150px;
+}
+
+#adult-dataset-grid_c3 {
+  width: 230px;
+}
+
+#adult-dataset-grid_c4 {
+  width: 60px;
+}
+
 .completion-score-0, .completion-score-1, .completion-score-2, .completion-score-3, .completion-score-4, .completion-score-5 {
     height: 12px;
     margin: 0;
@@ -65,3 +85,49 @@ table.hvt td
     display: block;
 }
 
+.dashboard {
+  font-size: 14px;
+  border-collapse: collapse;
+}
+
+.dashboard ul li {
+  padding: 3px;
+}
+
+.no-complications {
+  font-weight:bold;
+}
+
+div.form .plan-goals label {
+  width: 240px;
+}
+
+table.dashboard th {
+  font-size: 12px;
+}
+table.dashboard td, table.dashboard th {
+  border: 1px solid white;
+}
+
+table.dashboard td.odd {
+    background: none repeat scroll 0% 0% #E5F1F4;
+}
+
+table.dashboard td.even {
+    background: none repeat scroll 0% 0% #F8F8F8;
+}
+
+table.dashboard th {
+    color: #FFF;
+    background: url('bg.gif') repeat-x scroll left top #FFF;
+    text-align: center;
+    padding: 3px;
+}
+
+ul.count-list {
+  vertical-align: top;
+}
+
+ul.count-list li {
+  font-size: 12px;
+}

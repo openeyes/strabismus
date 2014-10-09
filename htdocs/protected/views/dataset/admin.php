@@ -3,13 +3,14 @@
 /* @var $model AdultDataset */
 
 $this->breadcrumbs=array(
-	'Adult Datasets'=>array('index'),
+	'Datasets'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List AdultDataset', 'url'=>array('index')),
-	array('label'=>'Create AdultDataset', 'url'=>array('create')),
+	array('label'=>'List Dataset', 'url'=>array('index')),
+	array('label'=>'Create Dataset', 'url'=>array('create')),
+	array('label'=>'Quick Create', 'url'=>array('quick')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -26,7 +27,72 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Adult Datasets</h1>
+<h2 style="font-weight: bold;">Dashboard</h2>
+<h3 style="font-weight: bold;">Operations</h3>
+<table class="dashboard dashboard-ops">
+  <tr>
+    <th>Total</th>
+    <th>This Year</th>
+    <th>Total Adults</th>
+    <th>Total Kids</th>
+    <th>Adults this Year</th>
+    <th>Kids this Year</th>
+    <th>Squint Types Total</th>
+    <th>Squint Types this Year</th>
+  </tr>
+  <tr>
+    <td class="odd"><?= $op_stats['total_ops'] ?></td>
+    <td class="even"><?= $op_stats['ops_this_year'] ?></td>
+    <td class="odd"><?= $op_stats['total_adults'] ?></td>
+    <td class="even"><?= $op_stats['total_kids'] ?></td>
+    <td class="odd"><?= $op_stats['adults_this_year'] ?></td>
+    <td class="even"><?= $op_stats['kids_this_year'] ?></td>
+    <td class="odd">
+      <ul class="count-list">
+        <? foreach($op_stats['total_cats'] as $cat): ?>
+        <li><?= $cat['cat'] ?>:&nbsp;<?= $cat['count'] ?></li>
+	<? endforeach ?>
+      </ul>
+    </td>
+    <td class="even">
+      <ul class="count-list">
+        <? foreach($op_stats['cats_this_year'] as $cat): ?>
+        <li><?= $cat['cat'] ?>:&nbsp;<?= $cat['count'] ?></li>
+	<? endforeach ?>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+<h3 style="font-weight: bold;">Accuracy<h3>
+<table class="dashboard dashboard-accuracy">
+  <tr>
+    <th>Precision</th>
+    <th>Unwanted Overcorrection</th>
+  </tr>
+  <tr>
+    <td class="even"><?= $accuracy_stats['near'] ?>% within 10p.d. of aim</td>
+    <td class="even"><?= $accuracy_stats['unwanted'] ?>%</td>
+  </tr>
+</table>
+
+<h3 style="font-weight: bold;">Safety</h3>
+<table class="dashboard dashboard-ops">
+  <tr>
+    <th>Intra-op complications this year</th>
+    <th>Post-op complications this year</th>
+    <th>Rate of complications this year</th>
+    <th>Rate of complications long term</th>
+  </tr>
+  <tr>
+    <td class="odd"><?= $safety_stats['intra_this_year'] ?></td>
+    <td class="even"><?= $safety_stats['post_this_year'] ?></td>
+    <td class="odd"><?= $safety_stats['rate_this_year'] ?>%</td>
+    <td class="even"><?= $safety_stats['rate_long_term'] ?>%</td>
+  </tr>
+</table>
+
+<h2 style="font-weight: bold;">Manage Datasets</h2>
 
 <p>
 You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
@@ -44,14 +110,32 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'id'=>'adult-dataset-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+	'enableSorting' => true,
+	'selectionChanged' => 'goToViewPage',
 	'columns'=>array(
-		'id',
-		'userId',
+//		'id',
+//		'userId',
+		array(
+			'name' => 'op_date',
+			'value' => 'date("d/m/Y",strtotime($data->op_date))',
+			'sortable' => true,
+		),
+//		'asmt_category',
+		'asmt_type',
+		array(
+			'type' => 'raw',
+			'header' => 'Completion',
+			'value' => '$data->completionScore()',
+			'sortable' => true,
+		),
 		'uuid',
+/*		array(
+			'name' => 'pt_postcode',
+			'header' => 'Outcode',
+			'sortable' => true,
+		),
 		'pt_age',
 		'pt_sex',
-		'pt_postcode',
-		/*
 		'pt_ethnic_group',
 		'asmt_date',
 		'asmt_num_ops',
@@ -116,7 +200,6 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'plan_ver_target_direction',
 		'plan_ver_target_angle',
 		'plan_torsion',
-		'op_date',
 		'op_anaeshetic',
 		'op_surgeon_grade',
 		'op_assistant_grade',

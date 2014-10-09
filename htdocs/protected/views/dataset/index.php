@@ -1,18 +1,19 @@
 <?php
-/* @var $this AdultDatasetController */
+/* @var $this DatasetController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Adult Datasets',
+	'Datasets',
 );
 
 $this->menu=array(
-	array('label'=>'Create AdultDataset', 'url'=>array('create')),
-	array('label'=>'Manage AdultDataset', 'url'=>array('admin')),
+	array('label'=>'Create Dataset', 'url'=>array('create')),
+	array('label'=>'Quick Create', 'url'=>array('quick')),
+	array('label'=>'Manage Dataset', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Adult Datasets</h1>
+<h1>Datasets</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

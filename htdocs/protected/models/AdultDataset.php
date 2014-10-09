@@ -241,10 +241,10 @@ class AdultDataset extends CActiveRecord
 			array('op_rio_surgery, op_rio_transposition, op_lio_surgery, op_lio_transposition', 'length', 'max'=>22),
 			array('op_rio_position, op_lio_position', 'length', 'max'=>14),
 			array('op_rso_surgery, op_lso_surgery', 'length', 'max'=>18),
-			array('asmt_notes, asmt_hvt_tr, asmt_hvt_tm, asmt_hvt_tl, asmt_hvt_mr, asmt_hvt_mm, asmt_hvt_ml, asmt_hvt_br, asmt_hvt_bm, asmt_hvt_bl, plan_goals, plan_other, op_date, op_eyedraw_right, op_eyedraw_left, op_comps, op_comments, early_date, early_notes, late_date, late_notes, late_comments', 'safe'),
+			array('asmt_notes, asmt_hvt_tr, asmt_hvt_tm, asmt_hvt_tl, asmt_hvt_mr, asmt_hvt_mm, asmt_hvt_ml, asmt_hvt_br, asmt_hvt_bm, asmt_hvt_bl, plan_goals, plan_other, op_date, op_eyedraw_right, op_eyedraw_left, op_comps, op_comments, early_date, early_notes, late_date, late_notes, late_comments, late_as20_total, late_as20_psychosocial, late_as20_functional, plan_goal_hor_align_pri, plan_goal_ver_align_pri, plan_goal_hor_align_ecc, plan_goal_ver_align_ecc, plan_goal_con_int_squint, plan_goal_abn_head_postn, plan_goal_binoc, plan_goal_torsion, plan_goal_alppat, plan_goal_vis_acu, late_outcome_near_target, late_unwanted_overcorrection', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, userId, uuid, pt_age, pt_sex, pt_postcode, pt_ethnic_group, asmt_date, asmt_num_ops, asmt_category, asmt_type, asmt_other_eye_surg, asmt_orbital_surg, asmt_previous_toxin, asmt_other_eye_disease, asmt_neuro_disease, asmt_other, asmt_spectacle_wear, asmt_refraction_worn, asmt_sphere_right, asmt_cyl_right, asmt_axis_right, asmt_sphere_left, asmt_cyl_left, asmt_axis_left, asmt_near_right, asmt_near_left, asmt_bcva_let_right, asmt_bcva_let_left, asmt_bcva_kay_right, asmt_bcva_kay_left, asmt_fixation_right, asmt_fixation_left, asmt_cover_hor_dist, asmt_hor_angle_dist, asmt_cover_vert_dist, asmt_ver_angle_dist, asmt_cover_hor_near, asmt_angle_near, asmt_cover_vert_near, asmt_ver_angle_near, asmt_pattern, asmt_ahp_present, asmt_ahp_desc, asmt_ahp_angle, asmt_binoc_with_cor, asmt_binoc_without_cor, asmt_torsion_sub, asmt_torsion, asmt_torsion_side, asmt_torsion_clock, asmt_torsion_amt, asmt_diplopia, asmt_stereo_present, asmt_stereo_frisby, asmt_stereo_tno, asmt_stereo_lang, asmt_newcastle_home, asmt_newcastle_near, asmt_newcastle_distance, asmt_IXTQ, asmt_amblyopia, asmt_amblyopia_treatment, asmt_notes, plan_goals, plan_other, plan_position, plan_eccentric, plan_distance, plan_hor_target_direction, plan_hor_target_angle, plan_ver_target_direction, plan_ver_target_angle, plan_torsion, op_date, op_anaeshetic, op_surgeon_grade, op_assistant_grade, op_measurement_point, op_rmr_surgery, op_rmr_amount, op_rmr_transposition, op_rir_surgery, op_rir_amount, op_rir_transposition, op_rlr_surgery, op_rlr_amount, op_rlr_transposition, op_rsr_surgery, op_rsr_amount, op_rsr_transposition, op_lmr_surgery, op_lmr_amount, op_lmr_transposition, op_lir_surgery, op_lir_amount, op_lir_transposition, op_llr_surgery, op_llr_amount, op_llr_transposition, op_lsr_surgery, op_lsr_amount, op_lsr_transposition, op_rio_surgery, op_rio_position, op_rio_transposition, op_rio_amount, op_rso_surgery, op_rso_amount, op_lio_surgery, op_lio_position, op_lio_transposition, op_lio_amount, op_lso_surgery, op_lso_amount, op_eyedraw_right, op_eyedraw_left, op_comps, op_comp_none, op_comp_wrong_side, op_comp_wrong_direction, op_comp_globe_perf, op_comp_snapped_muscle, op_comp_lost_muscle, op_comp_bleeding, op_comp_other, op_comments, early_date, early_bcva_let_right, early_bcva_let_left, early_bcva_kay_right, early_bcva_kay_left, early_fixation_right, early_fixation_left, early_cover_hor_dist, early_hor_angle_dist, early_cover_vert_dist, early_ver_angle_dist, early_cover_hor_near, early_angle_near, early_cover_vert_near, early_ver_angle_near, early_torsion_sub, early_torsion, early_torsion_side, early_torsion_clock, early_torsion_amt, early_notes, late_date, late_bcva_let_right, late_bcva_let_left, late_bcva_kay_right, late_bcva_kay_left, late_fixation_right, late_fixation_left, late_cover_hor_dist, late_hor_angle_dist, late_cover_vert_dist, late_ver_angle_dist, late_cover_hor_near, late_angle_near, late_cover_vert_near, late_ver_angle_near, late_notes, late_pattern, late_stereo_present, late_stereo_frisby, late_stereo_tno, late_stereo_lang, late_newcastle_home, late_newcastle_near, late_newcastle_distance, late_IXTQ, late_amblyopia, late_ahp_present, late_ahp_desc, late_ahp_angle, late_binoc_with_cor, late_binoc_without_cor, late_diplopia, late_torsion_sub, late_torsion, late_torsion_side, late_torsion_clock, late_torsion_amt, late_comp_none, late_comp_slipped_muscle, late_comp_rrd, late_comp_orb_inf, late_comp_scleritis, late_comp_endophthalmitis, late_comp_antseg_ischaemia, late_comp_iatrogenic_diplopia, late_comp_new_amblyopia, late_comp_unscheduled_clinic, late_comp_clinic_cause, late_comp_unscheduled_theatre, late_comp_theatre_cause, late_comments, prom_as20_preop, prom_as20_postop, prom_likert', 'safe', 'on'=>'search'),
+			array('uuid, pt_age, pt_sex, pt_postcode, pt_ethnic_group, asmt_date, asmt_num_ops, asmt_category, asmt_type, asmt_other_eye_surg, asmt_orbital_surg, asmt_previous_toxin, asmt_other_eye_disease, asmt_neuro_disease, asmt_other, asmt_spectacle_wear, asmt_refraction_worn, asmt_sphere_right, asmt_cyl_right, asmt_axis_right, asmt_sphere_left, asmt_cyl_left, asmt_axis_left, asmt_near_right, asmt_near_left, asmt_bcva_let_right, asmt_bcva_let_left, asmt_bcva_kay_right, asmt_bcva_kay_left, asmt_fixation_right, asmt_fixation_left, asmt_cover_hor_dist, asmt_hor_angle_dist, asmt_cover_vert_dist, asmt_ver_angle_dist, asmt_cover_hor_near, asmt_angle_near, asmt_cover_vert_near, asmt_ver_angle_near, asmt_pattern, asmt_ahp_present, asmt_ahp_desc, asmt_ahp_angle, asmt_binoc_with_cor, asmt_binoc_without_cor, asmt_torsion_sub, asmt_torsion, asmt_torsion_side, asmt_torsion_clock, asmt_torsion_amt, asmt_diplopia, asmt_stereo_present, asmt_stereo_frisby, asmt_stereo_tno, asmt_stereo_lang, asmt_newcastle_home, asmt_newcastle_near, asmt_newcastle_distance, asmt_IXTQ, asmt_amblyopia, asmt_amblyopia_treatment, asmt_notes, plan_goals, plan_other, plan_position, plan_eccentric, plan_distance, plan_hor_target_direction, plan_hor_target_angle, plan_ver_target_direction, plan_ver_target_angle, plan_torsion, op_date, op_anaeshetic, op_surgeon_grade, op_assistant_grade, op_measurement_point, op_rmr_surgery, op_rmr_amount, op_rmr_transposition, op_rir_surgery, op_rir_amount, op_rir_transposition, op_rlr_surgery, op_rlr_amount, op_rlr_transposition, op_rsr_surgery, op_rsr_amount, op_rsr_transposition, op_lmr_surgery, op_lmr_amount, op_lmr_transposition, op_lir_surgery, op_lir_amount, op_lir_transposition, op_llr_surgery, op_llr_amount, op_llr_transposition, op_lsr_surgery, op_lsr_amount, op_lsr_transposition, op_rio_surgery, op_rio_position, op_rio_transposition, op_rio_amount, op_rso_surgery, op_rso_amount, op_lio_surgery, op_lio_position, op_lio_transposition, op_lio_amount, op_lso_surgery, op_lso_amount, op_eyedraw_right, op_eyedraw_left, op_comps, op_comp_none, op_comp_wrong_side, op_comp_wrong_direction, op_comp_globe_perf, op_comp_snapped_muscle, op_comp_lost_muscle, op_comp_bleeding, op_comp_other, op_comments, early_date, early_bcva_let_right, early_bcva_let_left, early_bcva_kay_right, early_bcva_kay_left, early_fixation_right, early_fixation_left, early_cover_hor_dist, early_hor_angle_dist, early_cover_vert_dist, early_ver_angle_dist, early_cover_hor_near, early_angle_near, early_cover_vert_near, early_ver_angle_near, early_torsion_sub, early_torsion, early_torsion_side, early_torsion_clock, early_torsion_amt, early_notes, late_date, late_bcva_let_right, late_bcva_let_left, late_bcva_kay_right, late_bcva_kay_left, late_fixation_right, late_fixation_left, late_cover_hor_dist, late_hor_angle_dist, late_cover_vert_dist, late_ver_angle_dist, late_cover_hor_near, late_angle_near, late_cover_vert_near, late_ver_angle_near, late_notes, late_pattern, late_stereo_present, late_stereo_frisby, late_stereo_tno, late_stereo_lang, late_newcastle_home, late_newcastle_near, late_newcastle_distance, late_IXTQ, late_amblyopia, late_ahp_present, late_ahp_desc, late_ahp_angle, late_binoc_with_cor, late_binoc_without_cor, late_diplopia, late_torsion_sub, late_torsion, late_torsion_side, late_torsion_clock, late_torsion_amt, late_comp_none, late_comp_slipped_muscle, late_comp_rrd, late_comp_orb_inf, late_comp_scleritis, late_comp_endophthalmitis, late_comp_antseg_ischaemia, late_comp_iatrogenic_diplopia, late_comp_new_amblyopia, late_comp_unscheduled_clinic, late_comp_clinic_cause, late_comp_unscheduled_theatre, late_comp_theatre_cause, late_comments, prom_as20_preop, prom_as20_postop, prom_likert', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -299,13 +299,13 @@ class AdultDataset extends CActiveRecord
 			'asmt_fixation_right' => 'Asmt Fixation Right',
 			'asmt_fixation_left' => 'Asmt Fixation Left',
 			'asmt_cover_hor_dist' => 'CT horizontal (distance)',
-			'asmt_hor_angle_dist' => 'Distance angle',
+			'asmt_hor_angle_dist' => 'Angle p.d.',
 			'asmt_cover_vert_dist' => 'CT vertical (distance)',
-			'asmt_ver_angle_dist' => 'Distance angle',
+			'asmt_ver_angle_dist' => 'Angle p.d.',
 			'asmt_cover_hor_near' => 'CT horizontal (near)',
-			'asmt_angle_near' => 'Near angle',
+			'asmt_angle_near' => 'Angle p.d.',
 			'asmt_cover_vert_near' => 'CT vertical (near)',
-			'asmt_ver_angle_near' => 'Near angle',
+			'asmt_ver_angle_near' => 'Angle p.d.',
 			'asmt_pattern' => 'Signficant pattern',
 			'asmt_ahp_present' => 'Abnormal head posture',
 			'asmt_ahp_desc' => 'AHP description',
@@ -333,6 +333,16 @@ class AdultDataset extends CActiveRecord
 			'asmt_functional' => 'Functional',
 			'asmt_total' => 'Total',
 			'plan_goals' => 'Goals',
+			'plan_goal_hor_align_pri' => 'Horizontal Alignment in Primary Position',
+			'plan_goal_ver_align_pri' => 'Vertical Alignment in Primary Position',
+			'plan_goal_hor_align_ecc' => 'Horizontal Alignment in Eccentric Position',
+			'plan_goal_ver_align_ecc' => 'Vertical Alignment in Eccentric Position',
+			'plan_goal_con_int_squint' => 'Control of Intermittent Squint',
+			'plan_goal_abn_head_postn' => 'Abnormal Head Position',
+			'plan_goal_binoc' => 'Binocularity',
+			'plan_goal_torsion' => 'Torsion',
+			'plan_goal_alppat' => 'Alphabet Pattern/Shoot/Drift',
+			'plan_goal_vis_acu' => 'Visual Acuity (Nystagmus)',
 			'plan_other' => 'Specify',
 			'plan_position' => 'Position',
 			'plan_eccentric' => 'Value',
@@ -424,14 +434,14 @@ class AdultDataset extends CActiveRecord
 			'late_bcva_kay_left' => 'Late Bcva Kay Left',
 			'late_fixation_right' => 'Late Fixation Right',
 			'late_fixation_left' => 'Late Fixation Left',
-			'late_cover_hor_dist' => 'Late Cover Hor Dist',
-			'late_hor_angle_dist' => 'Late Hor Angle Dist',
-			'late_cover_vert_dist' => 'Late Cover Vert Dist',
-			'late_ver_angle_dist' => 'Late Ver Angle Dist',
-			'late_cover_hor_near' => 'Late Cover Hor Near',
-			'late_angle_near' => 'Late Angle Near',
-			'late_cover_vert_near' => 'Late Cover Vert Near',
-			'late_ver_angle_near' => 'Late Ver Angle Near',
+			'late_cover_hor_dist' => 'CT Horizontal (distance)',
+			'late_hor_angle_dist' => 'Angle p.d.',
+			'late_cover_vert_dist' => 'CT Vertical (distance)',
+			'late_ver_angle_dist' => 'Angle p.d.',
+			'late_cover_hor_near' => 'CT Horizontal (near)',
+			'late_angle_near' => 'Angle p.d.',
+			'late_cover_vert_near' => 'CT Vertical (near)',
+			'late_ver_angle_near' => 'Angle p.d.',
 			'late_notes' => 'Late Notes',
 			'late_pattern' => 'Late Pattern',
 			'late_stereo_present' => 'Late Stereo Present',
@@ -471,6 +481,11 @@ class AdultDataset extends CActiveRecord
 			'prom_as20_preop' => 'Prom As20 Preop',
 			'prom_as20_postop' => 'Prom As20 Postop',
 			'prom_likert' => 'Prom Likert',
+			'late_as20_functional' => 'Functional',
+			'late_as20_psychosocial' => 'Psychosocial',
+			'late_as20_total' => 'Total',
+            'late_unwanted_overcorrection' => "Unwanted overcorrection?",
+            'late_outcome_near_target' => 'Outcome within 10pd of target?',
 		);
 	}
 
@@ -484,9 +499,7 @@ class AdultDataset extends CActiveRecord
 		// should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('userId',$this->userId,true);
+		$criteria->condition = "userId = " . Yii::app()->user->id;
 		$criteria->compare('uuid',$this->uuid,true);
 		$criteria->compare('pt_age',$this->pt_age);
 		$criteria->compare('pt_sex',$this->pt_sex,true);
@@ -546,6 +559,16 @@ class AdultDataset extends CActiveRecord
 		$criteria->compare('asmt_amblyopia_treatment',$this->asmt_amblyopia_treatment,true);
 		$criteria->compare('asmt_notes',$this->asmt_notes,true);
 		$criteria->compare('plan_goals',$this->plan_goals,true);
+		$criteria->compare('plan_goal_hor_align_pri',$this->plan_goal_hor_align_pri);
+		$criteria->compare('plan_goal_ver_align_pri',$this->plan_goal_ver_align_pri);
+		$criteria->compare('plan_goal_hor_align_ecc',$this->plan_goal_hor_align_ecc);
+		$criteria->compare('plan_goal_ver_align_ecc',$this->plan_goal_ver_align_ecc);
+		$criteria->compare('plan_goal_con_int_squint',$this->plan_goal_con_int_squint);
+		$criteria->compare('plan_goal_abn_head_postn',$this->plan_goal_abn_head_postn);
+		$criteria->compare('plan_goal_binoc',$this->plan_goal_binoc);
+		$criteria->compare('plan_goal_torsion',$this->plan_goal_torsion);
+		$criteria->compare('plan_goal_alppat',$this->plan_goal_alppat);
+		$criteria->compare('plan_goal_vis_acu',$this->plan_goal_vis_acu);
 		$criteria->compare('plan_other',$this->plan_other,true);
 		$criteria->compare('plan_position',$this->plan_position,true);
 		$criteria->compare('plan_eccentric',$this->plan_eccentric,true);
@@ -675,6 +698,10 @@ class AdultDataset extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort' => array(
+			       'defaultOrder' => 'op_date DESC',
+			       'attributes' => array('op_date'),
+			),
 		));
 	}
 	
@@ -865,5 +892,75 @@ class AdultDataset extends CActiveRecord
 		}
 		
 		return $returnString;
+    }
+
+    public function completionScore()
+    {
+        $score=0;
+        // demographics
+        if ($this->pt_age) $score++;
+        if ($this->pt_postcode) $score++;
+        // classification
+        if ($this->asmt_category) $score++;
+        if ($this->asmt_type) $score++;
+        // pre-op
+        // at least one pair of entries from CT with the associated angle
+        if(($this->asmt_cover_hor_near && $this->asmt_angle_near) or
+           ($this->asmt_cover_vert_near && $this->asmt_ver_angle_near) or
+           ($this->asmt_cover_hor_dist && $this->asmt_hor_angle_dist) or
+           ($this->asmt_cover_vert_dist && $this->asmt_ver_angle_dist)) $score++;
+        // operation
+        if ($this->op_surgeon_grade) $score++;
+        if ($this->op_assistant_grade) $score++;
+        // complications
+        if ($this->op_comp_none or $this->op_comp_wrong_side or $this->op_comp_wrong_direction
+            or $this->op_comp_globe_perf or $this->op_comp_snapped_muscle or $this->op_comp_lost_muscle
+            or $this->op_comp_bleeding or $this->op_comps) $score++;
+        //at least one muscle (eg LLR or RIR) field entered with associated box of surgery  - not amount
+        if ($this->op_rmr_surgery or $this->op_rir_surgery or $this->op_rlr_surgery
+            or $this->op_rsr_surgery or $this->op_rio_surgery or $this->op_rso_surgery
+            or $this->op_lmr_surgery or $this->op_lir_surgery or $this->op_llr_surgery
+            or $this->op_lsr_surgery or $this->op_lio_surgery or $this->op_lso_surgery) $score++;
+        // post
+        // at least one pair of entries from CT with the associated angle
+        if(($this->late_cover_hor_near && $this->late_angle_near) or
+           ($this->late_cover_vert_near && $this->late_ver_angle_near) or
+           ($this->late_cover_hor_dist && $this->late_hor_angle_dist) or
+           ($this->late_cover_vert_dist && $this->late_ver_angle_dist)) $score++;
+        $total = 10;
+        $score = intval(($score/$total)*100);
+        $segments = abs(intval($score/20));
+        return '<span class="completion-score-' . $segments . '">' . $score . '%</span>';
+    }
+    public function getGoals()
+    {
+        $goals = array(
+            'plan_goals', 'plan_goal_hor_align_pri','plan_goal_ver_align_pri', 'plan_goal_hor_align_ecc',
+            'plan_goal_ver_align_ecc', 'plan_goal_con_int_squint', 'plan_goal_abn_head_postn',
+			'plan_goal_binoc', 'plan_goal_torsion', 'plan_goal_alppat',	'plan_goal_vis_acu',
+        );
+        $ret = array();
+        $labels = $this->attributeLabels();
+        foreach ($goals as $g)
+        {
+            if ($this->$g)
+               $ret[] = $labels[$g];
+        }
+        return $ret;
+    }
+
+    public function getComplications()
+    {
+        $fields = array(
+            'op_comp_none', 'op_comp_wrong_side', 'op_comp_wrong_direction', 'op_comp_globe_perf',
+            'op_comp_snapped_muscle', 'op_comp_lost_muscle', 'op_comp_bleeding', 'op_comp_other', 'op_comps',
+        );
+        $labels = $this->attributeLabels();
+        $ret = array();
+        foreach ($fields as $f) {
+            if ($this->$f)
+               $ret[] = $labels[$f];
+        }
+        return $ret;
     }
 }

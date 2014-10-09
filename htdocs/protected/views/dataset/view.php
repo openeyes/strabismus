@@ -3,16 +3,17 @@
 /* @var $model AdultDataset */
 
 $this->breadcrumbs=array(
-	'Adult Datasets'=>array('index'),
+	'Datasets'=>array('index'),
 	$model->id,
 );
 
 $this->menu=array(
-	array('label'=>'List AdultDataset', 'url'=>array('index')),
-	array('label'=>'Create AdultDataset', 'url'=>array('create')),
-	array('label'=>'Update AdultDataset', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete AdultDataset', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage AdultDataset', 'url'=>array('admin')),
+	array('label'=>'List Dataset',   'url'=>array('index')),
+	array('label'=>'Create Dataset', 'url'=>array('create')),
+	array('label'=>'Quick Create',   'url'=>array('quick')),
+	array('label'=>'Update Dataset', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Delete Dataset', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Manage Dataset', 'url'=>array('admin')),
 );
 ?>
 
@@ -82,6 +83,16 @@ $this->menu=array(
 		'asmt_amblyopia_treatment',
 		'asmt_notes',
 		'plan_goals',
+		'plan_goal_hor_align_pri',
+		'plan_goal_ver_align_pri',
+		'plan_goal_hor_align_ecc',
+		'plan_goal_ver_align_ecc',
+		'plan_goal_con_int_squint',
+		'plan_goal_abn_head_postn',
+		'plan_goal_binoc',
+		'plan_goal_torsion',
+		'plan_goal_alppat',
+		'plan_goal_vis_acu',
 		'plan_other',
 		'plan_position',
 		'plan_eccentric',
@@ -208,5 +219,8 @@ $this->menu=array(
 		'prom_as20_preop',
 		'prom_as20_postop',
 		'prom_likert',
+		'late_as20_functional',
+		'late_as20_psychosocial',
+		'late_as20_total',
 	),
 )); ?>
